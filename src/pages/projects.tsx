@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
+
 import { ProjectCard, ProjectCreateModal } from '@/features/project/components';
 import { useGetProjects } from '@/features/project/hooks';
 
@@ -35,9 +37,19 @@ export function Projects() {
 			</PageTitles>
 
 			<section className={'grid grid-cols-4 gap-4 p-4'}>
-				{projects.map((project) => (
-					<ProjectCard project={project} key={project.id} />
-				))}
+				<AnimatePresence>
+					{projects.map((project) => (
+						<motion.div
+							key={project.id}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.1 }}
+						>
+							<ProjectCard project={project} />
+						</motion.div>
+					))}
+				</AnimatePresence>
 			</section>
 		</div>
 	);

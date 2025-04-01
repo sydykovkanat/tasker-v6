@@ -18,14 +18,15 @@ import {
 interface Props {
 	onSubmit: (body: ProjectSchemaType) => void;
 	isLoading?: boolean;
+	defaultValues?: ProjectSchemaType;
 }
 
-export function ProjectForm({ onSubmit, isLoading }: Props) {
+export function ProjectForm({ onSubmit, isLoading, defaultValues }: Props) {
 	const form = useForm<ProjectSchemaType>({
 		resolver: zodResolver(ProjectSchema),
 		defaultValues: {
-			name: '',
-			description: '',
+			name: defaultValues?.name ?? '',
+			description: defaultValues?.description ?? '',
 		},
 	});
 

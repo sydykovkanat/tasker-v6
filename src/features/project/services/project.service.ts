@@ -22,6 +22,23 @@ class ProjectService {
 			})
 		).data;
 	}
+
+	public async update(projectId: number, body: ProjectSchemaType) {
+		return (
+			await instance<IProject>({
+				method: 'PUT',
+				url: `/projects/${projectId}`,
+				data: body,
+			})
+		).data;
+	}
+
+	public async delete(projectId: number) {
+		await instance<IProject>({
+			method: 'DELETE',
+			url: `/projects/${projectId}`,
+		});
+	}
 }
 
 export const projectService = new ProjectService();
