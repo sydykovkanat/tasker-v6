@@ -1,3 +1,4 @@
+import { ProjectSchemaType } from '@/features/project/schemas';
 import { IProject } from '@/features/project/types';
 
 import { instance } from '@/shared/api';
@@ -8,6 +9,16 @@ class ProjectService {
 			await instance<IProject[]>({
 				method: 'GET',
 				url: '/projects',
+			})
+		).data;
+	}
+
+	public async create(body: ProjectSchemaType) {
+		return (
+			await instance<IProject>({
+				method: 'POST',
+				url: '/projects',
+				data: body,
 			})
 		).data;
 	}

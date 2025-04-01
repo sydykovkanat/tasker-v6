@@ -1,4 +1,4 @@
-import { ProjectCard } from '@/features/project/components/project-card.tsx';
+import { ProjectCard, ProjectCreateModal } from '@/features/project/components';
 import { useGetProjects } from '@/features/project/hooks';
 
 import {
@@ -27,9 +27,11 @@ export function Projects() {
 				description={'Список всех проектов вашего отдела'}
 				className={'px-4 py-2'}
 			>
-				<Button size={'lg'}>
-					<IconFolderAdd /> Создать проект
-				</Button>
+				<ProjectCreateModal>
+					<Button size={'lg'}>
+						<IconFolderAdd /> Создать проект
+					</Button>
+				</ProjectCreateModal>
 			</PageTitles>
 
 			<section className={'grid grid-cols-4 gap-4 p-4'}>
