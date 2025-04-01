@@ -8,7 +8,7 @@ export function Sidebar() {
 	return (
 		<aside
 			className={
-				'flex w-full max-w-xs flex-col justify-between border-r border-dashed p-4'
+				'flex max-h-screen w-full max-w-xs flex-col justify-between border-r border-dashed p-4'
 			}
 		>
 			<section>

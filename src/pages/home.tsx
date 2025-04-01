@@ -1,12 +1,53 @@
+import { TaskCard } from '@/features/task/components';
+import { useGetTasks } from '@/features/task/hooks';
+
+import {
+	ErrorBlock,
+	IconNoteAdd,
+	Loading,
+	PageTitles,
+} from '@/shared/components/shared';
+import { Button } from '@/shared/components/ui';
+
 export function Home() {
+	const { isTasksLoading, tasks } = useGetTasks();
+
+	if (isTasksLoading) {
+		return <Loading />;
+	}
+
+	if (!tasks) {
+		return <ErrorBlock />;
+	}
+
+	const newTasks = tasks.filter((task) => task.status.id === 1);
+	const inProgressTasks = tasks.filter((task) => task.status.id === 2);
+	const completedTasks = tasks.filter((task) => task.status.id === 3);
+
 	return (
 		<div>
-			Всем привет! Это страница, которая будет отображаться при переходе на
-			корневой адрес сайта. Здесь можно разместить любую информацию, которую вы
-			хотите показать пользователям. Например, вы можете рассказать о себе,
-			своих интересах или проектах, над которыми работаете. Также можно добавить
-			ссылки на свои социальные сети или другие ресурсы. Главное - сделать
-			страницу интересной и информативной для посетителей!
+			<PageTitles
+				title={'Все задачи'}
+				description={
+					'Список всех ваших задач с возможностью фильтрации по статусу, приоритету и проекту.'
+				}
+				className={'px-4 py-2'}
+			>
+				<Button size={'lg'}>
+					<IconNoteAdd />
+					Создать задачу
+				</Button>
+			</PageTitles>
+
+			<div className={'grid grid-cols-3 gap-4 p-4'}>
+				{[newTasks, inProgressTasks, completedTasks].map((taskList, index) => (
+					<div className={'flex flex-col gap-y-4'} key={index}>
+						{taskList.map((task) => (
+							<TaskCard task={task} key={task.id} />
+						))}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }

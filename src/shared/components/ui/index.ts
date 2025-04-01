@@ -8,3 +8,5 @@ export * from './dropdown-menu';
 export * from './card';
 export * from './dialog';
 export * from './textarea';
+export * from './badge';
+export * from './scroll-area';
