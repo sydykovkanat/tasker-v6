@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import { SidebarNav, SidebarUser } from '@/widgets/sidebar/components';
+
 import { IconLogo } from '@/shared/components/shared';
-import { SidebarNav } from '@/widgets/sidebar/components';
 
 export function Sidebar() {
 	return (
@@ -15,7 +16,7 @@ export function Sidebar() {
 					<IconLogo className={'size-9'} />
 
 					<div className={'leading-none'}>
-						<h3 className={'font-medium'}>Tasker</h3>
+						<h3 className={'font-medium'}>Таскер</h3>
 						<p className={'text-muted-foreground text-xs'}>
 							Управление задачами и проектами
 						</p>
@@ -25,7 +26,7 @@ export function Sidebar() {
 				<SidebarNav />
 			</section>
 
-			<p className={'text-muted-foreground mt-4 text-xs'}>v3.0.0</p>
+			<SidebarUser />
 		</aside>
 	);
 }

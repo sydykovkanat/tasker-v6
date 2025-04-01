@@ -163,3 +163,150 @@ export const IconUsers = (props: React.SVGProps<SVGSVGElement>) => (
 		/>
 	</svg>
 );
+
+export const IconLogin = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.9871 10.2401 20.8194 9.05112 20.484C6.18961 19.6769 3.70555 18.3204 3.10956 15.2816C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27704 3.10956 8.71845C3.70555 5.67963 6.18961 4.32314 9.05112 3.516C10.2401 3.18062 10.8346 3.01293 11.3156 3.00116C13.3831 2.95058 14.9264 4.52305 15 6.37499'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		<path
+			d='M10 12H21M10 12C10 11.2998 11.9943 9.99153 12.5 9.5M10 12C10 12.7002 11.9943 14.0085 12.5 14.5'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconLogout = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		<path
+			d='M21 12H10M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconMoreHorizontalCircle = (
+	props: React.SVGProps<SVGSVGElement>,
+) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'#000000'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M11.9959 12H12.0049'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M15.9998 12H16.0088'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M7.99981 12H8.00879'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z'
+			stroke='currentColor'
+			strokeWidth='1.5'
+		/>
+	</svg>
+);
+
+export const IconMoreVertical = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'#000000'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M11.992 12H12.001'
+			stroke='currentColor'
+			strokeWidth='2.5'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M11.9842 18H11.9932'
+			stroke='currentColor'
+			strokeWidth='2.5'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M11.9998 6H12.0088'
+			stroke='currentColor'
+			strokeWidth='2.5'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconArrowLeft = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'#000000'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);

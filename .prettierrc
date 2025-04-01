@@ -11,11 +11,12 @@
 	"importOrderCaseInsensitive": true,
 	"importOrder": [
 		"<THIRD_PARTY_MODULES>",
-		"^@app/(.*)$",
-		"^@pages/(.*)$",
-		"^@features/(.*)$",
-		"^@widgets/(.*)$",
-		"^@shared/(.*)$",
+		"^@/app/(.*)$",
+		"^@/api/(.*)$",
+		"^@/pages/(.*)$",
+		"^@/features/(.*)$",
+		"^@/widgets/(.*)$",
+		"^@/shared/(.*)$",
 		"^../(.*)$",
 		"^./(.*)$"
 	],

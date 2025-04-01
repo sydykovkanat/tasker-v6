@@ -1,12 +1,11 @@
-'use client';
+import { useLocation } from 'react-router-dom';
 
-import { usePathname } from 'next/navigation';
-
-import { routes } from '@/shared/config';
 import { SidebarNavItem } from '@/widgets/sidebar/components';
 
+import { routes } from '@/shared/config';
+
 export function SidebarNav() {
-	const pathname = usePathname();
+	const { pathname } = useLocation();
 
 	return (
 		<nav>

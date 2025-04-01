@@ -7,7 +7,7 @@ export function Layout({ children }: PropsWithChildren) {
 		<main className={'flex min-h-screen'}>
 			<Sidebar />
 
-			<div className={'p-4'}>{children}</div>
+			<div className={'w-full p-4'}>{children}</div>
 		</main>
 	);
 }

@@ -36,7 +36,7 @@ export const routes: IRoute[] = [
 		label: 'Отклоненные',
 	},
 	{
-		url: '/project',
+		url: '/projects',
 		label: 'Проекты',
 		icon: IconFolder,
 	},
