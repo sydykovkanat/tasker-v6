@@ -1,5 +1,7 @@
-import { ProjectEditModal } from '@/features/project/components';
-import { useDeleteProject } from '@/features/project/hooks';
+import {
+	ProjectDeleteModal,
+	ProjectEditModal,
+} from '@/features/project/components';
 import { IProject } from '@/features/project/types';
 
 import { IconFolderEdit, IconFolderRemove } from '@/shared/components/shared';
@@ -17,8 +19,6 @@ interface Props {
 }
 
 export function ProjectCard({ project }: Props) {
-	const { isProjectDeleteLoading, deleteProject } = useDeleteProject();
-
 	return (
 		<Card className={'flex h-40 flex-col justify-between'}>
 			<CardHeader>
@@ -34,13 +34,11 @@ export function ProjectCard({ project }: Props) {
 					</div>
 
 					<div className={'flex items-center gap-x-1'}>
-						<Button
-							loading={isProjectDeleteLoading}
-							onClick={() => deleteProject(project.id)}
-							size={'icon'}
-						>
-							<IconFolderRemove />
-						</Button>
+						<ProjectDeleteModal projectId={project.id}>
+							<Button size={'icon'}>
+								<IconFolderRemove />
+							</Button>
+						</ProjectDeleteModal>
 
 						<ProjectEditModal
 							projectId={project.id}
