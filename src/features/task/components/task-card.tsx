@@ -35,10 +35,21 @@ export function TaskCard({ task }: Props) {
 					<CardTitle className={'text-[15px]'}>{task.taskName}</CardTitle>
 
 					<div className={'flex items-center gap-x-2'}>
-						{task.isView ? (
-							<IconView className={'text-muted-foreground size-5'} />
-						) : (
-							<IconViewOffSlash className={'text-muted-foreground size-5'} />
+						{task.status.id !== 2 &&
+							task.status.id !== 3 &&
+							(task.isView ? (
+								<IconView className={'text-muted-foreground size-5'} />
+							) : (
+								<IconViewOffSlash className={'text-muted-foreground size-5'} />
+							))}
+
+						{task.status.id !== 3 && (
+							<Badge
+								variant={'secondary'}
+								className={'border-border border-dashed'}
+							>
+								{task.priorityOrder}
+							</Badge>
 						)}
 
 						<PriorityBadge priority={task.priority} />

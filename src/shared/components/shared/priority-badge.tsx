@@ -19,7 +19,7 @@ export function PriorityBadge({ priority }: Props) {
 					: 'default';
 
 	return (
-		<Badge variant={variant} className={'border-border'}>
+		<Badge variant={variant} className={'border-dashed border-white'}>
 			{label}
 		</Badge>
 	);
