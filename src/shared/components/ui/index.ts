@@ -9,4 +9,5 @@ export * from './card';
 export * from './dialog';
 export * from './textarea';
 export * from './badge';
+export * from './table';
 export * from './scroll-area';
