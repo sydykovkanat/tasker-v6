@@ -53,3 +53,5 @@ export const useAuthStore = create(
 		},
 	),
 );
+
+export const logout = useAuthStore.getState().logout;

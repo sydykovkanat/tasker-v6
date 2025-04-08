@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'sonner';
 
-import { useAuthStore } from '@/features/auth/store';
+import { logout, useAuthStore } from '@/features/auth/store';
 
 import { API_URL } from '@/shared/constants';
 
@@ -23,7 +23,10 @@ instance.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response?.status === 403) {
-			toast.error('Доступ запрещен или сессия истекла!');
+			toast.error('Доступ запрещен или сессия истекла!', {
+				description: 'Пожалуйста, войдите в систему еще раз.',
+			});
+			logout();
 		}
 
 		return Promise.reject(error);

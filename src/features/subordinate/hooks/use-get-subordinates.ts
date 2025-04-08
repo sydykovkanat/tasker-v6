@@ -3,7 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { subordinateService } from '@/features/subordinate/services';
 
 export function useGetSubordinates(page: number, keyword?: string) {
-	const { data: subordinates, isLoading: isSubordinatesLoading } = useQuery({
+	const {
+		data: subordinates,
+		isLoading: isSubordinatesLoading,
+		isError,
+	} = useQuery({
 		queryKey: ['subordinates', page, keyword],
 		queryFn: async () => await subordinateService.getAll(page, keyword),
 	});
@@ -17,5 +21,6 @@ export function useGetSubordinates(page: number, keyword?: string) {
 			numberOfElements: 0,
 		},
 		isSubordinatesLoading,
+		isError,
 	};
 }

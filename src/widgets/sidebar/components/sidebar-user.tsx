@@ -1,12 +1,16 @@
 import { useAuthStore } from '@/features/auth/store';
+import { NotificationModal } from '@/features/notification/components';
 
-import { IconLogout, IconMoreVertical } from '@/shared/components/shared';
+import {
+	IconLogout,
+	IconMoreVertical,
+	IconNotification,
+} from '@/shared/components/shared';
 import {
 	Avatar,
 	Button,
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/shared/components/ui';
 
@@ -14,7 +18,7 @@ export function SidebarUser() {
 	const { user, logout } = useAuthStore();
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
 				<Button
 					size={'lg'}
@@ -38,10 +42,24 @@ export function SidebarUser() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side={'top'} className={'w-[300px]'}>
-				<DropdownMenuItem onClick={logout}>
+				<Button
+					variant={'ghost'}
+					onClick={logout}
+					className={'w-full justify-start font-normal'}
+				>
 					<IconLogout />
 					Выйти
-				</DropdownMenuItem>
+				</Button>
+
+				<NotificationModal>
+					<Button
+						variant={'ghost'}
+						className={'w-full justify-start font-normal'}
+					>
+						<IconNotification />
+						Уведомления
+					</Button>
+				</NotificationModal>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

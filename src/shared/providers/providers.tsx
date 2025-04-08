@@ -8,7 +8,13 @@ export function Providers({ children }: PropsWithChildren) {
 		<TanstackQueryProvider>
 			{children}
 
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					style: {
+						borderRadius: 'var(--radius)',
+					},
+				}}
+			/>
 		</TanstackQueryProvider>
 	);
 }

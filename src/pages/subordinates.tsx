@@ -7,6 +7,7 @@ import {
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 
 import {
+	ErrorBlock,
 	IconArrowLeft,
 	IconArrowRight,
 	Loading,
@@ -18,10 +19,14 @@ export function Subordinates() {
 	const [page, setPage] = useState(0);
 	const [searchValue, setSearchValue] = useState('');
 
-	const { subordinates, isSubordinatesLoading } = useGetSubordinates(
+	const { subordinates, isSubordinatesLoading, isError } = useGetSubordinates(
 		page,
 		searchValue,
 	);
+
+	if (isError) {
+		return <ErrorBlock />;
+	}
 
 	const handleNextPage = () => {
 		if (!subordinates.last && page < subordinates.totalPages - 1 && page >= 0) {
