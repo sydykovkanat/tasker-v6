@@ -2,6 +2,7 @@ export * from './button';
 export * from './select';
 export * from './calendar';
 export * from './popover';
+export * from './context-menu';
 export * from './form';
 export * from './input';
 export * from './label';

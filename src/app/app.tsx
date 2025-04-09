@@ -9,6 +9,7 @@ import {
 	Calendar,
 	Home,
 	NotFound,
+	OneTask,
 	Projects,
 	Subordinates,
 } from '@/pages';
@@ -24,6 +25,7 @@ export function App() {
 		<Layout>
 			<Routes>
 				<Route path={'/'} element={<Home />} />
+				<Route path={'/tasks/:id'} element={<OneTask />} />
 				<Route path={'/projects'} element={<Projects />} />
 				<Route path={'/calendar'} element={<Calendar />} />
 				<Route path={'/subordinates'} element={<Subordinates />} />

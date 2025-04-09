@@ -13,6 +13,15 @@ class TaskService {
 		).data;
 	}
 
+	public async getById(id: number) {
+		return (
+			await instance<ITask>({
+				method: 'GET',
+				url: `/tasks/${id}`,
+			})
+		).data;
+	}
+
 	public async create(data: TaskSchemaType) {
 		const formData = new FormData();
 
