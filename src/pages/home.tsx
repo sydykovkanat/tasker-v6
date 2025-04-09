@@ -1,4 +1,4 @@
-import { TaskCard } from '@/features/task/components';
+import { CreateTaskModal, TaskCard } from '@/features/task/components';
 import { useGetTasks } from '@/features/task/hooks';
 
 import {
@@ -33,10 +33,12 @@ export function Home() {
 				}
 				className={'px-4 py-2'}
 			>
-				<Button size={'lg'}>
-					<IconNoteAdd />
-					Создать задачу
-				</Button>
+				<CreateTaskModal>
+					<Button size={'lg'}>
+						<IconNoteAdd />
+						Создать задачу
+					</Button>
+				</CreateTaskModal>
 			</PageTitles>
 
 			<div className={'grid grid-cols-3 gap-4 p-4'}>
