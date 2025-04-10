@@ -1,4 +1,8 @@
-import { CreateTaskModal, TaskCard } from '@/features/task/components';
+import {
+	CreateTaskModal,
+	TaskCard,
+	TasksColumnTitle,
+} from '@/features/task/components';
 import { useGetTasks } from '@/features/task/hooks';
 
 import {
@@ -44,14 +48,22 @@ export function Home() {
 
 			<div className={'grid grid-cols-3 gap-4 p-4'}>
 				{[newTasks, inProgressTasks, completedTasks].map((taskList, index) => (
-					<div className={'flex flex-col gap-y-4'} key={index}>
-						{taskList.length === 0 ? (
-							<p>
-								Список задач со статусом "{formatStatus(index).label}" пуст.
-							</p>
-						) : (
-							taskList.map((task) => <TaskCard task={task} key={task.id} />)
-						)}
+					<div>
+						<TasksColumnTitle
+							status={formatStatus(index + 1).label}
+							count={taskList.length}
+						/>
+
+						<div className={'flex flex-col gap-y-4'} key={index}>
+							{taskList.length === 0 ? (
+								<p>
+									Список задач со статусом "{formatStatus(index + 1).label}"
+									пуст.
+								</p>
+							) : (
+								taskList.map((task) => <TaskCard task={task} key={task.id} />)
+							)}
+						</div>
 					</div>
 				))}
 			</div>
