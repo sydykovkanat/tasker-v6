@@ -54,6 +54,29 @@ class TaskService {
 		).data;
 	}
 
+	public async edit(id: number, data: TaskSchemaType) {
+		const formData = new FormData();
+
+		formData.append('taskName', data.taskName);
+		formData.append('description', data.description);
+		formData.append('priorityId', data.priorityId);
+		formData.append('performerId', data.performerId);
+		formData.append('departmentId', data.departmentId);
+		if (data.projectId !== 'undefined') {
+			formData.append('projectId', data.projectId);
+		}
+		formData.append('startDate', data.dates.from.toString());
+		formData.append('endDate', data.dates.to.toString());
+
+		return (
+			await instance<ITask>({
+				method: 'PUT',
+				url: `/tasks/${id}`,
+				data: formData,
+			})
+		).data;
+	}
+
 	public async delete(id: number) {
 		return (
 			await instance({

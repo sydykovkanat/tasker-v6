@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from 'react';
 
-import { TaskForm } from '@/features/task/components/task-form';
+import { TaskForm } from '@/features/task/components';
 import { useCreateTask } from '@/features/task/hooks';
 import { TaskSchemaType } from '@/features/task/schemas';
 

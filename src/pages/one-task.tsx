@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import {
+	EditTaskModal,
 	TaskAssignedCard,
 	TaskHistoryModal,
 	TaskInfo,
@@ -11,6 +12,7 @@ import {
 	ErrorBlock,
 	IconHistory,
 	IconNoteAdd,
+	IconNoteEdit,
 	Loading,
 	PageTitles,
 } from '@/shared/components/shared';
@@ -36,12 +38,21 @@ export function OneTask() {
 				className={'px-4 py-2'}
 				isBackButton
 			>
-				<TaskHistoryModal taskId={task.id}>
-					<Button size={'lg'} variant={'outline'}>
-						<IconHistory />
-						История изменений
-					</Button>
-				</TaskHistoryModal>
+				<div className={'flex items-center gap-x-2'}>
+					<EditTaskModal taskId={task.id}>
+						<Button size={'lg'} variant={'outline'}>
+							<IconNoteEdit />
+							Редактировать
+						</Button>
+					</EditTaskModal>
+
+					<TaskHistoryModal taskId={task.id}>
+						<Button size={'lg'} variant={'outline'}>
+							<IconHistory />
+							История изменений
+						</Button>
+					</TaskHistoryModal>
+				</div>
 			</PageTitles>
 
 			<div className={'flex h-full min-h-screen'}>

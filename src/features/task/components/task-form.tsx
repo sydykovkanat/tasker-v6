@@ -8,7 +8,7 @@ import { useGetProjects } from '@/features/project/hooks';
 import { TaskSchema, TaskSchemaType } from '@/features/task/schemas';
 import { useGetUsersByDepartment } from '@/features/user/hooks';
 
-import { IconCancel, IconNoteAdd } from '@/shared/components/shared';
+import { IconCancel, IconNoteEdit } from '@/shared/components/shared';
 import {
 	Button,
 	Calendar,
@@ -35,24 +35,37 @@ import { date } from '@/shared/lib';
 interface Props {
 	onSubmit: (data: TaskSchemaType) => void;
 	isLoading: boolean;
+	defaultValues?: {
+		taskName?: string;
+		description?: string;
+		departmentId?: string;
+		performerId?: string;
+		projectId?: string;
+		priorityId?: string;
+		dates?: {
+			from: Date;
+			to: Date;
+		};
+	};
 }
 
-export function TaskForm({ onSubmit, isLoading }: Props) {
+export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 	const user = useAuthStore((state) => state.user);
 
 	const form = useForm<TaskSchemaType>({
 		resolver: zodResolver(TaskSchema),
 		defaultValues: {
-			taskName: '',
-			description: '',
-			departmentId:
-				user && user.departmentId?.toString()
+			taskName: defaultValues?.taskName,
+			description: defaultValues?.description ?? '',
+			departmentId: defaultValues?.departmentId
+				? defaultValues?.departmentId
+				: user && user.departmentId
 					? user.departmentId.toString()
 					: 'undefined',
-			performerId: user && user.departmentId ? user.id.toString() : 'undefined',
-			projectId: 'undefined',
-			priorityId: '1',
-			dates: {
+			performerId: defaultValues?.performerId ?? 'undefined',
+			projectId: defaultValues?.projectId ?? 'undefined',
+			priorityId: defaultValues?.priorityId ?? '1',
+			dates: defaultValues?.dates ?? {
 				from: new Date(),
 				to: new Date(),
 			},
@@ -387,8 +400,8 @@ export function TaskForm({ onSubmit, isLoading }: Props) {
 					</DialogClose>
 
 					<Button size={'lg'} loading={isLoading}>
-						<IconNoteAdd />
-						Создать задачу
+						<IconNoteEdit />
+						Сохранить
 					</Button>
 				</div>
 			</form>
