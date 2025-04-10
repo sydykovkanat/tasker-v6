@@ -6,8 +6,8 @@ import {
 	CreateTaskModal,
 	TaskCard,
 	TasksColumnTitle,
+	TasksFilters,
 } from '@/features/task/components';
-import { TasksFilters } from '@/features/task/components/tasks-filters';
 import { useGetTasks } from '@/features/task/hooks';
 
 import {

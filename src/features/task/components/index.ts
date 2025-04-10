@@ -6,3 +6,4 @@ export * from './task-assigned-card';
 export * from './task-info';
 export * from './task-history-modal';
 export * from './tasks-column-title';
+export * from './tasks-filters';

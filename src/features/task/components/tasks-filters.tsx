@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/features/auth/store';
 import { IProject } from '@/features/project/types';
 import { ISubordinate } from '@/features/subordinate/types';
 
@@ -32,6 +33,9 @@ export function TasksFilters({
 	statusId,
 	onStatusChange,
 }: Props) {
+	const user = useAuthStore((state) => state.user);
+	const isAdmin = user?.roles.includes('ADMIN');
+
 	return (
 		<div className={'grid grid-cols-5 gap-x-4 px-4 pt-4'}>
 			<Input placeholder={'Поиск...'} />
@@ -58,27 +62,32 @@ export function TasksFilters({
 				</SelectContent>
 			</Select>
 
-			<Select
-				disabled={!subordinates}
-				value={performerId}
-				onValueChange={onSubordinateChange}
-			>
-				<SelectTrigger size={'lg'} className={'w-full'}>
-					<SelectValue
-						placeholder={projects ? 'Выберите сотрудника' : 'Нет сотрудников'}
-					/>
-				</SelectTrigger>
+			{isAdmin && (
+				<Select
+					disabled={!subordinates}
+					value={performerId}
+					onValueChange={onSubordinateChange}
+				>
+					<SelectTrigger size={'lg'} className={'w-full'}>
+						<SelectValue
+							placeholder={projects ? 'Выберите сотрудника' : 'Нет сотрудников'}
+						/>
+					</SelectTrigger>
 
-				<SelectContent>
-					<SelectItem value={'all'}>Все сотрудники</SelectItem>
+					<SelectContent>
+						<SelectItem value={'all'}>Все сотрудники</SelectItem>
 
-					{subordinates?.map((subordinate) => (
-						<SelectItem key={subordinate.id} value={subordinate.id.toString()}>
-							{subordinate.name}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+						{subordinates?.map((subordinate) => (
+							<SelectItem
+								key={subordinate.id}
+								value={subordinate.id.toString()}
+							>
+								{subordinate.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
 
 			<Select value={statusId} onValueChange={onStatusChange}>
 				<SelectTrigger size={'lg'} className={'w-full'}>
