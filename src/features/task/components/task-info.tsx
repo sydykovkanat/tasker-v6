@@ -45,7 +45,9 @@ export function TaskInfo({ task }: Props) {
 				<h4 className={'text-muted-foreground'}>Описание</h4>
 
 				<p
-					className={'bg-secondary rounded-lg border border-dashed p-2'}
+					className={
+						'bg-secondary rounded-lg border border-dashed p-2 whitespace-pre-wrap'
+					}
 					dangerouslySetInnerHTML={{ __html: task.description }}
 				/>
 			</div>

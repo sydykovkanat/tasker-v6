@@ -1,9 +1,11 @@
+import { differenceInDays, parseISO, startOfToday } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import { TaskMenu } from '@/features/task/components';
 import { ITask } from '@/features/task/types';
 
 import {
+	IconArrowsRight,
 	IconView,
 	IconViewOffSlash,
 	PriorityBadge,
@@ -15,7 +17,8 @@ import {
 	CardContent,
 	CardTitle,
 } from '@/shared/components/ui';
-import { date } from '@/shared/lib';
+import { date, getDayDeclension } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	task: ITask;
@@ -50,7 +53,7 @@ export function TaskCard({ task }: Props) {
 										/>
 									))}
 
-								{task.status.id !== 3 && (
+								{task.priorityOrder && task.status.id !== 3 && (
 									<Badge
 										variant={'secondary'}
 										className={'border-border border-dashed'}
@@ -80,9 +83,78 @@ export function TaskCard({ task }: Props) {
 								Обнов: {date(task.updatedDate, 'hh:mm, dd MMM')}
 							</span>
 						</div>
+
+						<Footer
+							status={task.status.id}
+							startDate={task.startDate}
+							endDate={task.endDate}
+						/>
 					</CardContent>
 				</Card>
 			</Link>
 		</TaskMenu>
 	);
+}
+
+function Footer({
+	status,
+	startDate,
+	endDate,
+}: {
+	status: number;
+	startDate: string;
+	endDate: string;
+}) {
+	const start = parseISO(startDate);
+	const end = parseISO(endDate);
+	const today = startOfToday();
+
+	const timeDiff = end.getTime() - start.getTime();
+	const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) || 1;
+
+	const remainingDays = differenceInDays(end, today);
+
+	const normalizedPercentage = Math.max(
+		remainingDays < 0 ? 38 : 20,
+		Math.min((remainingDays / 30) * 100, 100),
+	);
+
+	const barWidth = `${normalizedPercentage}%`;
+
+	return status === 1 ? (
+		<div className={'flex w-full items-center justify-between text-sm'}>
+			<div className={'text-muted-foreground flex items-center gap-x-1'}>
+				<span>{date(startDate)}</span>
+
+				<IconArrowsRight className={'size-3.5'} />
+
+				<span>{date(endDate)}</span>
+			</div>
+
+			<Badge
+				variant={'secondary'}
+				className={'border-border border border-dashed'}
+			>
+				Дано: {totalDays} {getDayDeclension(totalDays)}
+			</Badge>
+		</div>
+	) : status === 2 ? (
+		<div className={'h-4 w-full rounded-full border bg-gray-200 shadow-inner'}>
+			<div
+				className={cn(
+					'bg-primary relative top-1/2 left-0 h-4 -translate-y-2/4 rounded-full border p-1 shadow-md',
+					{
+						'bg-destructive': remainingDays < 0,
+					},
+				)}
+				style={{ width: barWidth }}
+			>
+				<span className='text-muted absolute top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 text-xs text-nowrap'>
+					{remainingDays < 0
+						? `Просрочка на ${Math.abs(remainingDays)} ${getDayDeclension(remainingDays)}`
+						: `${remainingDays} ${getDayDeclension(remainingDays)} ост.`}
+				</span>
+			</div>
+		</div>
+	) : null;
 }

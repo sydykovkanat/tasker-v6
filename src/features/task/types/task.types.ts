@@ -9,20 +9,20 @@ export interface ITask {
 	taskName: string;
 	description: string;
 	author: IPerson;
-	priorityOrder: number;
+	priorityOrder: number | null;
 	performer: IPerson;
 	departmentDto: IDepartment;
 	createdDate: string;
 	updatedDate: string;
 	startDate: string;
 	isView: boolean;
-	endDate: Date;
+	endDate: string;
 	priority: IPriority;
 	status: IStatus;
 	files: IFile[];
 	isTemplate: boolean;
 	project: IProject | null;
 	reason: string | null;
-	rejectedDateTime: Date | null;
+	rejectedDateTime: string | null;
 	rejectedAuthor: IPerson | null;
 }
