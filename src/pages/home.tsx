@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
@@ -8,7 +6,7 @@ import {
 	TasksColumnTitle,
 	TasksFilters,
 } from '@/features/task/components';
-import { useGetTasks } from '@/features/task/hooks';
+import { useGetTasks, useTasksFilters } from '@/features/task/hooks';
 
 import {
 	ErrorBlock,
@@ -17,47 +15,25 @@ import {
 	PageTitles,
 } from '@/shared/components/shared';
 import { Button } from '@/shared/components/ui';
-import { formatStatus } from '@/shared/lib';
-
-interface Filters {
-	projectId?: string;
-	performerId?: string;
-	statusId?: string;
-}
+import { formatStatus, safeParse } from '@/shared/lib';
 
 export function Home() {
-	const [filters, setFilters] = useState<Filters>({
-		statusId: undefined,
-		projectId: undefined,
-		performerId: undefined,
-	});
-
-	const projectId =
-		filters.projectId && !isNaN(Number(filters.projectId))
-			? Number(filters.projectId)
-			: undefined;
-
-	const performerId =
-		filters.performerId && !isNaN(Number(filters.performerId))
-			? Number(filters.performerId)
-			: undefined;
-
-	const statusId =
-		filters.statusId && !isNaN(Number(filters.statusId))
-			? Number(filters.statusId)
-			: undefined;
+	const {
+		handleProjectChange,
+		handleStatusChange,
+		handleSubordinateChange,
+		performerId,
+		projectId,
+		statusId,
+	} = useTasksFilters();
 
 	const { isTasksLoading, tasks } = useGetTasks(
-		statusId,
-		projectId,
-		performerId,
+		safeParse(statusId),
+		safeParse(projectId),
+		safeParse(performerId),
 	);
 	const { projects, isProjectsLoading } = useGetProjects();
-	const { subordinates, isSubordinatesLoading } = useGetSubordinates(
-		0,
-		undefined,
-		1000,
-	);
+	const { subordinates, isSubordinatesLoading } = useGetSubordinates(0, 1000);
 
 	if (isTasksLoading || isProjectsLoading || isSubordinatesLoading) {
 		return <Loading />;
@@ -67,30 +43,12 @@ export function Home() {
 		return <ErrorBlock />;
 	}
 
-	const handleProjectChange = (projectId: string) => {
-		setFilters((prev) => ({
-			...prev,
-			projectId,
-		}));
-	};
-
-	const handleSubordinateChange = (subordinateId: string) => {
-		setFilters((prev) => ({
-			...prev,
-			performerId: subordinateId,
-		}));
-	};
-
-	const handleStatusChange = (statusId: string) => {
-		setFilters((prev) => ({
-			...prev,
-			statusId,
-		}));
-	};
-
 	const newTasks = tasks.filter((task) => task.status.id === 1);
 	const inProgressTasks = tasks.filter((task) => task.status.id === 2);
 	const completedTasks = tasks.filter((task) => task.status.id === 3);
+	const formattedStatus = formatStatus(parseInt(statusId || '0'));
+
+	console.log(statusId);
 
 	return (
 		<div>
@@ -111,36 +69,57 @@ export function Home() {
 
 			<TasksFilters
 				projects={projects}
-				projectId={filters.projectId}
+				projectId={projectId}
 				onProjectChange={handleProjectChange}
 				subordinates={subordinates.content}
 				onSubordinateChange={handleSubordinateChange}
-				performerId={filters.performerId}
-				statusId={filters.statusId}
+				performerId={performerId}
+				statusId={statusId}
 				onStatusChange={handleStatusChange}
 			/>
 
-			<div className={'grid grid-cols-3 gap-4 p-4'}>
-				{[newTasks, inProgressTasks, completedTasks].map((taskList, index) => (
-					<div>
-						<TasksColumnTitle
-							status={formatStatus(index + 1).label}
-							count={taskList.length}
-						/>
+			{statusId !== 'all' ? (
+				<div className={'p-4'}>
+					<h5 className={'mb-4 text-lg'}>
+						Задачи со статусом "{formattedStatus.label}"
+						{tasks.length > 0 && ` (${tasks.length})`}
+					</h5>
 
-						<div className={'flex flex-col gap-y-4'} key={index}>
-							{taskList.length === 0 ? (
-								<p className={'text-muted-foreground mt-4 text-center'}>
-									Список задач со статусом "{formatStatus(index + 1).label}"
-									пуст.
-								</p>
-							) : (
-								taskList.map((task) => <TaskCard task={task} key={task.id} />)
-							)}
-						</div>
+					<div className='columns-2 gap-4'>
+						{tasks.map((task) => (
+							<div key={task.id} className='mb-4 break-inside-avoid'>
+								<TaskCard task={task} />
+							</div>
+						))}
 					</div>
-				))}
-			</div>
+				</div>
+			) : (
+				<div className={'grid grid-cols-3 gap-4 p-4'}>
+					{[newTasks, inProgressTasks, completedTasks].map(
+						(taskList, index) => (
+							<div>
+								<TasksColumnTitle
+									status={formatStatus(index + 1).label}
+									count={taskList.length}
+								/>
+
+								<div className={'flex flex-col gap-y-4'} key={index}>
+									{taskList.length === 0 ? (
+										<p className={'text-muted-foreground mt-4 text-center'}>
+											Список задач со статусом "{formatStatus(index + 1).label}"
+											пуст.
+										</p>
+									) : (
+										taskList.map((task) => (
+											<TaskCard task={task} key={task.id} />
+										))
+									)}
+								</div>
+							</div>
+						),
+					)}
+				</div>
+			)}
 		</div>
 	);
 }

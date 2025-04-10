@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { subordinateService } from '@/features/subordinate/services';
 
-export function useGetSubordinates(page: number, keyword?: string, size = 18) {
+export function useGetSubordinates(page: number, size = 18, keyword?: string) {
 	const {
 		data: subordinates,
 		isLoading: isSubordinatesLoading,
