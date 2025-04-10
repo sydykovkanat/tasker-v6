@@ -5,7 +5,7 @@ import {
 	TaskHistoryModal,
 	TaskInfo,
 } from '@/features/task/components';
-import { useGetTaskById } from '@/features/task/hooks';
+import { useGetTask } from '@/features/task/hooks';
 
 import {
 	ErrorBlock,
@@ -18,7 +18,7 @@ import { Button } from '@/shared/components/ui';
 
 export function OneTask() {
 	const { id } = useParams<{ id: string }>() as { id: string };
-	const { isTaskLoading, task } = useGetTaskById(parseInt(id));
+	const { isTaskLoading, task } = useGetTask(parseInt(id));
 
 	if (isTaskLoading) {
 		return <Loading />;

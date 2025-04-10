@@ -8,6 +8,7 @@ import {
 	PageTitles,
 } from '@/shared/components/shared';
 import { Button } from '@/shared/components/ui';
+import { formatStatus } from '@/shared/lib';
 
 export function Home() {
 	const { isTasksLoading, tasks } = useGetTasks();
@@ -44,9 +45,13 @@ export function Home() {
 			<div className={'grid grid-cols-3 gap-4 p-4'}>
 				{[newTasks, inProgressTasks, completedTasks].map((taskList, index) => (
 					<div className={'flex flex-col gap-y-4'} key={index}>
-						{taskList.map((task) => (
-							<TaskCard task={task} key={task.id} />
-						))}
+						{taskList.length === 0 ? (
+							<p>
+								Список задач со статусом "{formatStatus(index).label}" пуст.
+							</p>
+						) : (
+							taskList.map((task) => <TaskCard task={task} key={task.id} />)
+						)}
 					</div>
 				))}
 			</div>

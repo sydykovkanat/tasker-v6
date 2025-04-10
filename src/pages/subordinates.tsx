@@ -40,6 +40,11 @@ export function Subordinates() {
 		}
 	};
 
+	const handleSearch = (value: string) => {
+		setSearchValue(value);
+		setPage(0);
+	};
+
 	return (
 		<div>
 			<PageTitles
@@ -51,7 +56,7 @@ export function Subordinates() {
 			<section className={'p-4'}>
 				<SubordinatesSearch
 					value={searchValue}
-					onChange={(v) => setSearchValue(v)}
+					onChange={handleSearch}
 					className={'mb-2'}
 				/>
 

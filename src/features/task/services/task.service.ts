@@ -44,6 +44,15 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async delete(id: number) {
+		return (
+			await instance({
+				method: 'DELETE',
+				url: `/tasks/${id}`,
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();
