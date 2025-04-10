@@ -45,12 +45,31 @@ export function Home() {
 		return <ErrorBlock />;
 	}
 
-	const newTasks = tasks.filter((task) => task.status.id === 1);
-	const inProgressTasks = tasks.filter((task) => task.status.id === 2);
-	const completedTasks = tasks.filter((task) => task.status.id === 3);
-	const formattedStatus = formatStatus(parseInt(statusId || '0'));
+	const sortedTasks = tasks.sort(
+		(a, b) =>
+			new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+	);
 
-	console.log(statusId);
+	const newTasks = tasks
+		.filter((task) => task.status.id === 1)
+		.sort(
+			(a, b) =>
+				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+		);
+	const inProgressTasks = tasks
+		.filter((task) => task.status.id === 2)
+		.sort(
+			(a, b) =>
+				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+		);
+	const completedTasks = tasks
+		.filter((task) => task.status.id === 3)
+		.sort(
+			(a, b) =>
+				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+		);
+
+	const formattedStatus = formatStatus(parseInt(statusId || '0'));
 
 	return (
 		<div>
@@ -84,12 +103,12 @@ export function Home() {
 				<div className={'p-4'}>
 					<h5 className={'mb-4 text-lg'}>
 						Задачи со статусом "{formattedStatus.label}"
-						{tasks.length > 0 && ` (${tasks.length})`}
+						{sortedTasks.length > 0 && ` (${sortedTasks.length})`}
 					</h5>
 
 					<AnimatePresence mode={'popLayout'}>
 						<div className='columns-2 gap-4'>
-							{tasks.map((task) => (
+							{sortedTasks.map((task) => (
 								<div key={task.id} className='mb-4 break-inside-avoid'>
 									<motion.div
 										key={task.id}
