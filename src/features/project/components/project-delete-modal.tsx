@@ -45,15 +45,6 @@ export function ProjectDeleteModal({
 				</DialogHeader>
 
 				<DialogFooter>
-					<Button
-						onClick={handleDelete}
-						loading={isProjectDeleteLoading}
-						size={'lg'}
-					>
-						<IconFolderRemove />
-						Да, удалить
-					</Button>
-
 					<DialogClose asChild disabled={isProjectDeleteLoading}>
 						<Button
 							loading={isProjectDeleteLoading}
@@ -64,6 +55,15 @@ export function ProjectDeleteModal({
 							Закрыть
 						</Button>
 					</DialogClose>
+
+					<Button
+						onClick={handleDelete}
+						loading={isProjectDeleteLoading}
+						size={'lg'}
+					>
+						<IconFolderRemove />
+						Да, удалить
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

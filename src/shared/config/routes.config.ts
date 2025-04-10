@@ -29,7 +29,7 @@ export const routes: IRoute[] = [
 	},
 	{
 		url: '/tasks/completed',
-		label: 'Выполненные',
+		label: 'Завершенные',
 	},
 	{
 		url: '/tasks/rejected',

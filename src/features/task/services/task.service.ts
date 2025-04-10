@@ -4,11 +4,14 @@ import { ITask } from '@/features/task/types';
 import { instance } from '@/shared/api';
 
 class TaskService {
-	public async getAll() {
+	public async getAll(status?: number) {
 		return (
 			await instance<ITask[]>({
 				method: 'GET',
 				url: '/tasks',
+				params: {
+					statusId: status,
+				},
 			})
 		).data;
 	}

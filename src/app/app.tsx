@@ -7,6 +7,7 @@ import { Layout } from '@/shared/components/shared';
 import {
 	Auth,
 	Calendar,
+	FilteredTasks,
 	Home,
 	NotFound,
 	OneTask,
@@ -25,6 +26,19 @@ export function App() {
 		<Layout>
 			<Routes>
 				<Route path={'/'} element={<Home />} />
+				<Route path={'/tasks/new'} element={<FilteredTasks status={1} />} />
+				<Route
+					path={'/tasks/in-progress'}
+					element={<FilteredTasks status={2} />}
+				/>
+				<Route
+					path={'/tasks/completed'}
+					element={<FilteredTasks status={3} />}
+				/>
+				<Route
+					path={'/tasks/rejected'}
+					element={<FilteredTasks status={4} />}
+				/>
 				<Route path={'/tasks/:id'} element={<OneTask />} />
 				<Route path={'/projects'} element={<Projects />} />
 				<Route path={'/calendar'} element={<Calendar />} />
