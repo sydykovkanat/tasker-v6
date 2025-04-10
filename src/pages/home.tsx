@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
+
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
@@ -85,13 +87,24 @@ export function Home() {
 						{tasks.length > 0 && ` (${tasks.length})`}
 					</h5>
 
-					<div className='columns-2 gap-4'>
-						{tasks.map((task) => (
-							<div key={task.id} className='mb-4 break-inside-avoid'>
-								<TaskCard task={task} />
-							</div>
-						))}
-					</div>
+					<AnimatePresence mode={'popLayout'}>
+						<div className='columns-2 gap-4'>
+							{tasks.map((task) => (
+								<div key={task.id} className='mb-4 break-inside-avoid'>
+									<motion.div
+										key={task.id}
+										layout
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0, scale: 0.95 }}
+										transition={{ duration: 0.3 }}
+									>
+										<TaskCard task={task} />
+									</motion.div>
+								</div>
+							))}
+						</div>
+					</AnimatePresence>
 				</div>
 			) : (
 				<div className={'grid grid-cols-3 gap-4 p-4'}>
@@ -103,18 +116,29 @@ export function Home() {
 									count={taskList.length}
 								/>
 
-								<div className={'flex flex-col gap-y-4'} key={index}>
-									{taskList.length === 0 ? (
-										<p className={'text-muted-foreground mt-4 text-center'}>
-											Список задач со статусом "{formatStatus(index + 1).label}"
-											пуст.
-										</p>
-									) : (
-										taskList.map((task) => (
-											<TaskCard task={task} key={task.id} />
-										))
-									)}
-								</div>
+								<AnimatePresence mode={'popLayout'}>
+									<div className={'flex flex-col gap-y-4'} key={index}>
+										{taskList.length === 0 ? (
+											<p className={'text-muted-foreground mt-4 text-center'}>
+												Список задач со статусом "
+												{formatStatus(index + 1).label}" пуст.
+											</p>
+										) : (
+											taskList.map((task) => (
+												<motion.div
+													key={task.id}
+													layout
+													initial={{ opacity: 0 }}
+													animate={{ opacity: 1 }}
+													exit={{ opacity: 0, scale: 0.95 }}
+													transition={{ duration: 0.3 }}
+												>
+													<TaskCard task={task} />
+												</motion.div>
+											))
+										)}
+									</div>
+								</AnimatePresence>
 							</div>
 						),
 					)}

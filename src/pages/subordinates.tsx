@@ -21,6 +21,7 @@ export function Subordinates() {
 
 	const { subordinates, isSubordinatesLoading, isError } = useGetSubordinates(
 		page,
+		18,
 		searchValue,
 	);
 

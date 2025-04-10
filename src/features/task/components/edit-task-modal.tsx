@@ -16,9 +16,14 @@ import {
 
 interface Props {
 	taskId: number;
+	modal?: boolean;
 }
 
-export function EditTaskModal({ taskId, children }: PropsWithChildren<Props>) {
+export function EditTaskModal({
+	taskId,
+	modal,
+	children,
+}: PropsWithChildren<Props>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { editTask, isEditTaskLoading } = useEditTask(taskId);
 	const { isTaskLoading, task } = useGetTask(taskId);
@@ -33,7 +38,7 @@ export function EditTaskModal({ taskId, children }: PropsWithChildren<Props>) {
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+		<Dialog open={isOpen} onOpenChange={setIsOpen} modal={modal}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 
 			<DialogContent className={'sm:max-w-5xl'} outsideClose={false}>

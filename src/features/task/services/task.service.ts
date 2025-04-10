@@ -85,6 +85,30 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async updateStatus(id: number, statusId: number) {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/${id}`,
+				params: {
+					statusId,
+				},
+			})
+		).data;
+	}
+
+	public async updatePriority(id: number, priorityId: number) {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/${id}/priority`,
+				data: {
+					priorityId,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();
