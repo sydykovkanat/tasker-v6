@@ -2,10 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 
 import { taskService } from '@/features/task/services';
 
-export function useGetTasks(status?: number) {
+export function useGetTasks(
+	statusId?: number,
+	projectId?: number,
+	performerId?: number,
+) {
 	const { data: tasks, isLoading: isTasksLoading } = useQuery({
-		queryKey: ['tasks', status],
-		queryFn: async () => await taskService.getAll(status),
+		queryKey: ['tasks', statusId, projectId, performerId],
+		queryFn: async () =>
+			await taskService.getAll(statusId, projectId, performerId),
 	});
 
 	return { tasks, isTasksLoading };
