@@ -8,8 +8,13 @@ import { useGetProjects } from '@/features/project/hooks';
 import { TaskSchema, TaskSchemaType } from '@/features/task/schemas';
 import { useGetUsersByDepartment } from '@/features/user/hooks';
 
-import { IconCancel, IconNoteEdit } from '@/shared/components/shared';
 import {
+	IconCancel,
+	IconDelete,
+	IconNoteEdit,
+} from '@/shared/components/shared';
+import {
+	Avatar,
 	Button,
 	Calendar,
 	DialogClose,
@@ -31,6 +36,7 @@ import {
 	Textarea,
 } from '@/shared/components/ui';
 import { date } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	onSubmit: (data: TaskSchemaType) => void;
@@ -39,7 +45,7 @@ interface Props {
 		taskName?: string;
 		description?: string;
 		departmentId?: string;
-		performerId?: string;
+		performerId?: string[];
 		projectId?: string;
 		priorityId?: string;
 		dates?: {
@@ -62,7 +68,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 				: user && user.departmentId
 					? user.departmentId.toString()
 					: 'undefined',
-			performerId: defaultValues?.performerId ?? 'undefined',
+			performerId: defaultValues?.performerId ?? ['undefined'],
 			projectId: defaultValues?.projectId ?? 'undefined',
 			priorityId: defaultValues?.priorityId ?? '1',
 			dates: defaultValues?.dates ?? {
@@ -84,6 +90,21 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 		onSubmit(data);
 		form.reset();
 	};
+
+	const selectedUsers = form
+		.watch('performerId')
+		.filter((id) => id !== 'undefined')
+		.map((id) => {
+			const user = users?.find((user) => user.id.toString() === id);
+
+			return {
+				name: user?.name,
+				id: user?.id,
+			};
+		});
+	const notSelectedUsers = users?.filter((user) => {
+		return !selectedUsers.some((selectedUser) => selectedUser.id === user.id);
+	});
 
 	return (
 		<Form {...form}>
@@ -253,7 +274,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 											value={field.value}
 											onValueChange={(v) => {
 												field.onChange(v);
-												form.setValue('performerId', 'undefined');
+												form.setValue('performerId', ['undefined']);
 											}}
 											disabled={isLoading}
 										>
@@ -299,20 +320,44 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 						<FormField
 							control={form.control}
 							name={'performerId'}
-							render={({ field }) => (
+							render={() => (
 								<FormItem>
 									<FormLabel>Исполнитель</FormLabel>
 
 									<FormControl>
 										<Select
-											value={field.value}
-											onValueChange={field.onChange}
+											onValueChange={(v) => {
+												const current = form.getValues('performerId') || [];
+
+												let updated = current.filter(
+													(id) => id !== 'undefined',
+												);
+
+												if (v === 'undefined') {
+													form.setValue('performerId', ['undefined']);
+													return;
+												}
+
+												if (!updated.includes(v)) {
+													updated = [...updated, v];
+												}
+
+												form.setValue('performerId', updated);
+											}}
 											disabled={
 												isLoading || form.watch('departmentId') === 'undefined'
 											}
 										>
 											<SelectTrigger size={'lg'} className={'w-full'}>
-												<SelectValue placeholder={'Выберите исполнителя'} />
+												<span>
+													Добавить исполнителя (
+													{
+														form
+															.watch('performerId')
+															.filter((item) => item !== 'undefined')?.length
+													}
+													)
+												</span>
 											</SelectTrigger>
 
 											<SelectContent>
@@ -327,11 +372,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 												) : (
 													users && (
 														<>
-															<SelectItem value={'undefined'}>
-																Не выбрано
-															</SelectItem>
-
-															{users.map((user) => (
+															{notSelectedUsers?.map((user) => (
 																<SelectItem
 																	value={user.id.toString()}
 																	key={user.id}
@@ -345,6 +386,42 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 											</SelectContent>
 										</Select>
 									</FormControl>
+
+									<div className={'flex flex-wrap items-center gap-2'}>
+										{selectedUsers.map((user) => (
+											<button
+												type={'button'}
+												className={'group relative rounded-full'}
+												onClick={(e) => {
+													e.preventDefault();
+
+													const current = form.getValues('performerId');
+
+													if (current) {
+														const updated = current.filter(
+															(id) => id !== user.id?.toString(),
+														);
+														form.setValue('performerId', updated);
+													}
+												}}
+											>
+												<div
+													className={cn(
+														'group-hover:bg-accent hover:border-destructive absolute z-10 size-full rounded-full border-2 transition-all duration-200 ease-in-out',
+													)}
+												>
+													<IconDelete
+														className={cn(
+															'pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-all duration-200 ease-in-out',
+															'group-hover:text-destructive pointer-events-auto size-5.5 group-hover:opacity-100',
+														)}
+													/>
+												</div>
+
+												<Avatar fallback={user.name} key={user.id} />
+											</button>
+										))}
+									</div>
 
 									<FormMessage />
 								</FormItem>

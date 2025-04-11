@@ -13,12 +13,10 @@ export const TaskSchema = z.object({
 		.refine((value) => value !== 'undefined', {
 			message: 'Нужно выбрать приоритет задачи',
 		}),
-	performerId: z
-		.string()
-		.min(1, { message: 'Выберите исполнителя задачи' })
-		.refine((value) => value !== 'undefined', {
-			message: 'Нужно выбрать исполнителя задачи',
-		}),
+	performerId: z.preprocess((val) => {
+		if (typeof val === 'string' && val === 'undefined') return [];
+		return val;
+	}, z.array(z.string())),
 	dates: z.object(
 		{
 			from: z.date({

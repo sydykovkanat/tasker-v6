@@ -30,14 +30,24 @@ export function TaskCard({ task }: Props) {
 			<Link to={`/tasks/${task.id}`}>
 				<Card className={'py-4'}>
 					<CardContent className={'space-y-2.5 px-4'}>
-						{task.project && (
-							<Badge
-								variant={'secondary'}
-								className={'border-border border-dashed'}
-							>
-								{task.project.name}
-							</Badge>
-						)}
+						<div className={'flex items-center gap-x-2'}>
+							{task.project && (
+								<Badge
+									variant={'secondary'}
+									className={'border-border border-dashed'}
+								>
+									{task.project.name}
+								</Badge>
+							)}
+							{task.status.id === 4 && (
+								<Badge
+									variant={'destructive'}
+									className={'border-background border-dashed'}
+								>
+									Отклонено
+								</Badge>
+							)}
+						</div>
 
 						<div className={'flex items-start justify-between gap-x-4'}>
 							<CardTitle className={'text-[15px]'}>{task.taskName}</CardTitle>

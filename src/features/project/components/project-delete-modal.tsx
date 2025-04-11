@@ -34,7 +34,14 @@ export function ProjectDeleteModal({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogTrigger asChild>{children}</DialogTrigger>
+			<DialogTrigger
+				asChild
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
+			>
+				{children}
+			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Вы уверены, что хотите удалить проект?</DialogTitle>

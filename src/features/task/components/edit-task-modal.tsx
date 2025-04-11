@@ -56,7 +56,7 @@ export function EditTaskModal({
 					defaultValues={{
 						taskName: task.taskName,
 						priorityId: task.priority.id.toString(),
-						performerId: task.performer.id.toString(),
+						performerId: [task.performer.id.toString()],
 						departmentId: task.departmentDto.id.toString(),
 						projectId: task.project?.id.toString(),
 						dates: {

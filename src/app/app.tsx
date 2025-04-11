@@ -26,18 +26,18 @@ export function App() {
 		<Layout>
 			<Routes>
 				<Route path={'/'} element={<Home />} />
-				<Route path={'/tasks/new'} element={<FilteredTasks status={1} />} />
+				<Route path={'/tasks/new'} element={<FilteredTasks statusId={1} />} />
 				<Route
 					path={'/tasks/in-progress'}
-					element={<FilteredTasks status={2} />}
+					element={<FilteredTasks statusId={2} />}
 				/>
 				<Route
 					path={'/tasks/completed'}
-					element={<FilteredTasks status={3} />}
+					element={<FilteredTasks statusId={3} />}
 				/>
 				<Route
 					path={'/tasks/rejected'}
-					element={<FilteredTasks status={4} />}
+					element={<FilteredTasks statusId={4} />}
 				/>
 				<Route path={'/tasks/:id'} element={<OneTask />} />
 				<Route path={'/projects'} element={<Projects />} />

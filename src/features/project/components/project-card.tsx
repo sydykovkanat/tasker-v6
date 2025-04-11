@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
 	ProjectDeleteModal,
 	ProjectEditModal,
@@ -23,7 +25,7 @@ export function ProjectCard({ project }: Props) {
 		<Card className={'flex h-40 flex-col justify-between'}>
 			<CardHeader>
 				<div className={'flex items-start justify-between gap-x-4'}>
-					<div>
+					<Link to={`/?projectId=${project.id}`} className={'hover:underline'}>
 						<CardTitle className={'line-clamp-2 first-letter:uppercase'}>
 							{project.name}
 						</CardTitle>
@@ -31,7 +33,7 @@ export function ProjectCard({ project }: Props) {
 						<CardDescription className={'line-clamp-4 first-letter:uppercase'}>
 							{project.description}
 						</CardDescription>
-					</div>
+					</Link>
 
 					<div className={'flex items-center gap-x-1'}>
 						<ProjectDeleteModal projectId={project.id}>

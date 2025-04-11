@@ -1,16 +1,30 @@
-import { TaskCard } from '@/features/task/components';
-import { useGetTasks } from '@/features/task/hooks';
+import { useGetProjects } from '@/features/project/hooks';
+import { useGetSubordinates } from '@/features/subordinate/hooks';
+import { TaskCard, TasksFilters } from '@/features/task/components';
+import { useGetTasks, useTasksFilters } from '@/features/task/hooks';
 
 import { ErrorBlock, Loading, PageTitles } from '@/shared/components/shared';
-import { formatStatus } from '@/shared/lib';
+import { formatStatus, safeParse } from '@/shared/lib';
 
 interface Props {
-	status: 1 | 2 | 3 | 4;
+	statusId: 1 | 2 | 3 | 4;
 }
 
-export function FilteredTasks({ status }: Props) {
-	const formattedStatus = formatStatus(status);
-	const { tasks, isTasksLoading } = useGetTasks(status);
+export function FilteredTasks({ statusId }: Props) {
+	const {
+		projectId,
+		performerId,
+		handleSubordinateChange,
+		handleProjectChange,
+	} = useTasksFilters();
+	const formattedStatus = formatStatus(statusId);
+	const { tasks, isTasksLoading } = useGetTasks(
+		safeParse(statusId),
+		safeParse(projectId),
+		safeParse(performerId),
+	);
+	const { projects } = useGetProjects();
+	const { subordinates } = useGetSubordinates(0, 1000);
 
 	if (isTasksLoading) {
 		return <Loading />;
@@ -26,6 +40,16 @@ export function FilteredTasks({ status }: Props) {
 				title={`Задачи со статусом "${formattedStatus.label}"`}
 				description={`Здесь вы можете просмотреть задачи, которые имеют статус "${formattedStatus.label}"`}
 				className={'px-4 py-2'}
+			/>
+
+			<TasksFilters
+				onProjectChange={handleProjectChange}
+				subordinates={subordinates.content}
+				onSubordinateChange={handleSubordinateChange}
+				projects={projects}
+				projectId={projectId}
+				performerId={performerId}
+				isStatusDisabled={true}
 			/>
 
 			<section className='columns-2 gap-4 p-4'>

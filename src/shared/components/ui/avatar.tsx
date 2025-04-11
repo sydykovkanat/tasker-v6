@@ -7,9 +7,11 @@ function Avatar({
 	src,
 	className,
 	fallback,
+	fallbackClassName,
 }: {
 	src?: string | null;
 	className?: string;
+	fallbackClassName?: string;
 	fallback?: string;
 }) {
 	return (
@@ -29,6 +31,7 @@ function Avatar({
 				data-slot='avatar-fallback'
 				className={cn(
 					'bg-muted flex size-full items-center justify-center rounded-full uppercase',
+					fallbackClassName,
 				)}
 			>
 				{fallback

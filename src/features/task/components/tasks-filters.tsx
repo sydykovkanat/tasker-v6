@@ -20,7 +20,8 @@ interface Props {
 	onSubordinateChange: (performerId: string) => void;
 	performerId?: string;
 	statusId?: string;
-	onStatusChange: (statusId: string) => void;
+	onStatusChange?: (statusId: string) => void;
+	isStatusDisabled?: boolean;
 }
 
 export function TasksFilters({
@@ -32,6 +33,7 @@ export function TasksFilters({
 	performerId,
 	statusId,
 	onStatusChange,
+	isStatusDisabled,
 }: Props) {
 	const user = useAuthStore((state) => state.user);
 	const isAdmin = user?.roles.includes('ADMIN');
@@ -89,21 +91,23 @@ export function TasksFilters({
 				</Select>
 			)}
 
-			<Select value={statusId} onValueChange={onStatusChange}>
-				<SelectTrigger size={'lg'} className={'w-full'}>
-					<SelectValue placeholder={'Выберите статус'} />
-				</SelectTrigger>
+			{!isStatusDisabled && (
+				<Select value={statusId} onValueChange={onStatusChange}>
+					<SelectTrigger size={'lg'} className={'w-full'}>
+						<SelectValue placeholder={'Выберите статус'} />
+					</SelectTrigger>
 
-				<SelectContent>
-					<SelectItem value={'all'}>Все статусы</SelectItem>
+					<SelectContent>
+						<SelectItem value={'all'}>Все статусы</SelectItem>
 
-					{[1, 2, 3].map((status) => (
-						<SelectItem key={status} value={status.toString()}>
-							{formatStatus(status).label}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+						{[1, 2, 3].map((status) => (
+							<SelectItem key={status} value={status.toString()}>
+								{formatStatus(status).label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
 		</div>
 	);
 }
