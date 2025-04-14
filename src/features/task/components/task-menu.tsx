@@ -110,7 +110,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 									onClick={() => editTaskPriority(1)}
 								>
 									<IconCircle className={'text-green-500'} />
-									Приоритет
+									Низкий
 								</ContextMenuItem>
 							)}
 
@@ -120,7 +120,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 									onClick={() => editTaskPriority(2)}
 								>
 									<IconCircle className={'text-yellow-500'} />
-									Средний приоритет
+									Средний
 								</ContextMenuItem>
 							)}
 
@@ -130,7 +130,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 									onClick={() => editTaskPriority(3)}
 								>
 									<IconCircle className={'text-red-500'} />
-									Высокий приоритет
+									Высокий
 								</ContextMenuItem>
 							)}
 						</ContextMenuSubContent>
