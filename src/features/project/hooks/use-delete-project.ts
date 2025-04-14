@@ -13,10 +13,14 @@ export function useDeleteProject() {
 				await projectService.delete(projectId),
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({ queryKey: ['projects'] });
-				toast.success('Проект успешно удален');
+				toast.success('Проект успешно удален', {
+					description: 'Проект был успешно удален',
+				});
 			},
 			onError: () => {
-				toast.error('Не удалось удалить проект');
+				toast.error('Не удалось удалить проект', {
+					description: 'Проект не был удален, попробуйте позже',
+				});
 			},
 		});
 

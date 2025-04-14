@@ -8,3 +8,4 @@ export * from './task-history-modal';
 export * from './tasks-column-title';
 export * from './tasks-filters';
 export * from './edit-task-modal';
+export * from './delete-task-modal';

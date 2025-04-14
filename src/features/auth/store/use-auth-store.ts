@@ -17,7 +17,7 @@ interface Store {
 	isLoading: boolean;
 }
 
-export const useAuthStore = create(
+export const useAuthStore = create<Store>()(
 	persist<Store>(
 		(set) => ({
 			isLoading: false,
@@ -50,6 +50,14 @@ export const useAuthStore = create(
 		}),
 		{
 			name: 'tasker-user',
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-expect-error
+			partialize: (state) => ({ user: state.user }),
+			onRehydrateStorage: () => (state) => {
+				if (state?.user) {
+					state.isLoggedIn = true;
+				}
+			},
 		},
 	),
 );

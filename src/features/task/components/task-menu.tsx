@@ -1,18 +1,27 @@
 import { PropsWithChildren } from 'react';
 
 import { useAuthStore } from '@/features/auth/store';
-import {
-	useDeleteTask,
-	useEditTaskPriority,
-	useEditTaskStatus,
-} from '@/features/task/hooks';
+import { DeleteTaskModal } from '@/features/task/components/delete-task-modal';
+import { useEditTaskPriority, useEditTaskStatus } from '@/features/task/hooks';
 import { ITask } from '@/features/task/types';
 
-import { IconDelete } from '@/shared/components/shared';
 import {
+	IconCircle,
+	IconCircleArrowDataTransferHorizontal,
+	IconCircleArrowDataTransferVertical,
+	IconCircleArrowDown,
+	IconCircleArrowRight,
+	IconCircleArrowUp,
+	IconDelete,
+} from '@/shared/components/shared';
+import {
+	Button,
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from '@/shared/components/ui';
 
@@ -21,7 +30,6 @@ interface Props {
 }
 
 export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
-	const { deleteTask, isDeleteTaskLoading } = useDeleteTask();
 	const { editTaskStatus, isEditTaskStatusLoading } = useEditTaskStatus(
 		task.id,
 	);
@@ -43,76 +51,103 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 
 	return (
 		<ContextMenu>
-			<ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
+			<ContextMenuTrigger asChild disabled={!isAccess}>
+				{children}
+			</ContextMenuTrigger>
 			<ContextMenuContent>
-				{!isNew && !isCompleted && (
-					<ContextMenuItem
-						disabled={isEditTaskStatusLoading}
-						onClick={() => editTaskStatus(1)}
-					>
-						<svg />
-						Перевести в новое
-					</ContextMenuItem>
-				)}
+				<ContextMenuSub>
+					<ContextMenuSubTrigger className={'flex items-center gap-x-2'}>
+						<IconCircleArrowDataTransferHorizontal
+							className={'text-muted-foreground'}
+						/>
+						Статус
+					</ContextMenuSubTrigger>
+					<ContextMenuSubContent className='w-48'>
+						{!isNew && !isCompleted && (
+							<ContextMenuItem
+								disabled={isEditTaskStatusLoading}
+								onClick={() => editTaskStatus(1)}
+							>
+								<IconCircleArrowUp />
+								Перевести в новое
+							</ContextMenuItem>
+						)}
 
-				{!isProgress && (
-					<ContextMenuItem
-						disabled={isEditTaskStatusLoading}
-						onClick={() => editTaskStatus(2)}
-					>
-						<svg />
-						Перевести в работу
-					</ContextMenuItem>
+						{!isProgress && (
+							<ContextMenuItem
+								disabled={isEditTaskStatusLoading}
+								onClick={() => editTaskStatus(2)}
+							>
+								<IconCircleArrowRight />
+								Перевести в работу
+							</ContextMenuItem>
+						)}
+
+						{!isCompleted && (
+							<ContextMenuItem
+								disabled={isEditTaskStatusLoading}
+								onClick={() => editTaskStatus(3)}
+							>
+								<IconCircleArrowDown />
+								Завершить задачу
+							</ContextMenuItem>
+						)}
+					</ContextMenuSubContent>
+				</ContextMenuSub>
+
+				{!isCompleted && (
+					<ContextMenuSub>
+						<ContextMenuSubTrigger className={'flex items-center gap-x-2'}>
+							<IconCircleArrowDataTransferVertical
+								className={'text-muted-foreground'}
+							/>
+							Изменить приоритет
+						</ContextMenuSubTrigger>
+						<ContextMenuSubContent>
+							{!isLow && (
+								<ContextMenuItem
+									disabled={isEditTaskPriorityLoading}
+									onClick={() => editTaskPriority(1)}
+								>
+									<IconCircle className={'text-green-500'} />
+									Приоритет
+								</ContextMenuItem>
+							)}
+
+							{!isMiddle && (
+								<ContextMenuItem
+									disabled={isEditTaskPriorityLoading}
+									onClick={() => editTaskPriority(2)}
+								>
+									<IconCircle className={'text-yellow-500'} />
+									Средний приоритет
+								</ContextMenuItem>
+							)}
+
+							{!isHigh && (
+								<ContextMenuItem
+									disabled={isEditTaskPriorityLoading}
+									onClick={() => editTaskPriority(3)}
+								>
+									<IconCircle className={'text-red-500'} />
+									Высокий приоритет
+								</ContextMenuItem>
+							)}
+						</ContextMenuSubContent>
+					</ContextMenuSub>
 				)}
 
 				{!isCompleted && (
-					<ContextMenuItem
-						disabled={isEditTaskStatusLoading}
-						onClick={() => editTaskStatus(3)}
-					>
-						<svg />
-						Завершить задачу
-					</ContextMenuItem>
-				)}
-
-				{!isLow && (
-					<ContextMenuItem
-						disabled={isEditTaskPriorityLoading}
-						onClick={() => editTaskPriority(1)}
-					>
-						<svg />
-						Низкий приоритет
-					</ContextMenuItem>
-				)}
-
-				{!isMiddle && (
-					<ContextMenuItem
-						disabled={isEditTaskPriorityLoading}
-						onClick={() => editTaskPriority(2)}
-					>
-						<svg />
-						Средний приоритет
-					</ContextMenuItem>
-				)}
-
-				{!isHigh && (
-					<ContextMenuItem
-						disabled={isEditTaskPriorityLoading}
-						onClick={() => editTaskPriority(3)}
-					>
-						<svg />
-						Высокий приоритет
-					</ContextMenuItem>
-				)}
-
-				{isAccess && !isCompleted && (
-					<ContextMenuItem
-						onClick={() => deleteTask(task.id)}
-						disabled={isDeleteTaskLoading}
-					>
-						<IconDelete />
-						Удалить
-					</ContextMenuItem>
+					<DeleteTaskModal taskId={task.id}>
+						<Button
+							variant={'ghost'}
+							size={'sm'}
+							className={'w-full justify-start font-normal'}
+						>
+							<IconDelete className={'text-muted-foreground'} />
+							Удалить
+						</Button>
+					</DeleteTaskModal>
 				)}
 			</ContextMenuContent>
 		</ContextMenu>

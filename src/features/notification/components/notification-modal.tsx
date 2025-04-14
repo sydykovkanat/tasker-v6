@@ -36,7 +36,7 @@ export function NotificationModal({ children }: PropsWithChildren) {
 					</DialogDescription>
 				</DialogHeader>
 
-				<ScrollArea className={'h-[600px]'}>
+				<ScrollArea className={'relative h-[600px]'}>
 					<div className='flex flex-col gap-4'>
 						{isNotificationsLoading ? (
 							<p>Loading...</p>
@@ -45,7 +45,13 @@ export function NotificationModal({ children }: PropsWithChildren) {
 								<NotificationCard notification={notification} />
 							))
 						) : (
-							<p>No notifications</p>
+							<p
+								className={
+									'text-muted-foreground absolute top-1/2 left-1/2 -translate-1/2 -translate-x-1/2 text-nowrap'
+								}
+							>
+								Нет уведомлений. Вы можете проверить их позже.
+							</p>
 						)}
 					</div>
 				</ScrollArea>

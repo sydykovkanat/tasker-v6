@@ -14,10 +14,14 @@ export function useEditProject(projectId: number) {
 				await projectService.update(projectId, body),
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({ queryKey: ['projects'] });
-				toast.success('Проект успешно обновлён');
+				toast.success('Проект успешно обновлён', {
+					description: 'Данные проекта были успешно обновлены',
+				});
 			},
 			onError: () => {
-				toast.error('Не удалось обновить проект');
+				toast.error('Не удалось обновить проект', {
+					description: 'Проект не был обновлён, попробуйте позже',
+				});
 			},
 		});
 

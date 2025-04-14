@@ -9,7 +9,18 @@ export function useCreateTask() {
 
 	const { mutate: createTask, isPending: isCreateTaskLoading } = useMutation({
 		mutationKey: ['tasks create'],
-		mutationFn: async (data: TaskSchemaType) => await taskService.create(data),
+		mutationFn: async (data: TaskSchemaType) => {
+			const { performerId, ...taskData } = data;
+
+			if (!performerId) {
+				return await taskService.create(taskData);
+			}
+
+			return await taskService.create({
+				...taskData,
+				performerId,
+			});
+		},
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['tasks'] });
 

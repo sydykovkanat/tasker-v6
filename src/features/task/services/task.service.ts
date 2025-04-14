@@ -37,7 +37,15 @@ class TaskService {
 		formData.append('taskName', data.taskName);
 		formData.append('description', data.description);
 		formData.append('priorityId', data.priorityId);
-		formData.append('performerId', data.performerId);
+		if (
+			data.performerId &&
+			data.performerId?.length > 0 &&
+			data.performerId[0] !== 'undefined'
+		) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-expect-error
+			formData.append('performerId', data.performerId);
+		}
 		formData.append('departmentId', data.departmentId);
 		if (data.projectId !== 'undefined') {
 			formData.append('projectId', data.projectId);
@@ -60,7 +68,15 @@ class TaskService {
 		formData.append('taskName', data.taskName);
 		formData.append('description', data.description);
 		formData.append('priorityId', data.priorityId);
-		formData.append('performerId', data.performerId);
+		if (
+			data.performerId &&
+			data.performerId?.length > 0 &&
+			data.performerId[0] !== 'undefined'
+		) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-expect-error
+			formData.append('performerId', data.performerId);
+		}
 		formData.append('departmentId', data.departmentId);
 		if (data.projectId !== 'undefined') {
 			formData.append('projectId', data.projectId);

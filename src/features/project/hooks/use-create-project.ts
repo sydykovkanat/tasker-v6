@@ -14,10 +14,14 @@ export function useCreateProject() {
 				await projectService.create(body),
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({ queryKey: ['projects'] });
-				toast.success('Проект успешно создан');
+				toast.success('Проект успешно создан', {
+					description: 'Новый проект был успешно создан',
+				});
 			},
 			onError: () => {
-				toast.error('Не удалось создать проект');
+				toast.error('Не удалось создать проект', {
+					description: 'Проект не был создан, попробуйте позже',
+				});
 			},
 		});
 

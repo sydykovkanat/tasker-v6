@@ -386,6 +386,52 @@ export const IconStatus = (props: React.SVGProps<SVGSVGElement>) => (
 	</svg>
 );
 
+export const IconCircleArrowDataTransferVertical = (
+	props: React.SVGProps<SVGSVGElement>,
+) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M10.2857 7.5L10.2857 15.4338C10.2857 16.0804 10.2857 16.4037 10.1093 16.4841C9.93296 16.5646 9.72538 16.336 9.31022 15.8788L8 14.4358M13.7143 16.5L13.7143 8.56622C13.7143 7.91964 13.7143 7.59635 13.8907 7.51589C14.067 7.43543 14.2746 7.66404 14.6898 8.12124L16 9.56415'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconCircleArrowDataTransferHorizontal = (
+	props: React.SVGProps<SVGSVGElement>,
+) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M16.5 10.2857H8.56622C7.91964 10.2857 7.59635 10.2857 7.51589 10.1093C7.43543 9.93296 7.66404 9.72538 8.12124 9.31022L9.56415 8M7.5 13.7143H15.4338C16.0804 13.7143 16.4037 13.7143 16.4841 13.8907C16.5646 14.067 16.336 14.2746 15.8788 14.6898L14.4358 16'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
 export const IconCircle = (props: React.SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
@@ -402,6 +448,69 @@ export const IconCircle = (props: React.SVGProps<SVGSVGElement>) => (
 			r='10'
 			stroke='currentColor'
 			strokeWidth='2'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconCircleArrowRight = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M16 12L8 12M16 12C16 12.7002 14.0057 14.0085 13.5 14.5M16 12C16 11.2998 14.0057 9.99153 13.5 9.5'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconCircleArrowDown = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M9.5 13.5C9.99153 14.0057 11.2998 16 12 16M14.5 13.5C14.0085 14.0057 12.7002 16 12 16M12 16V8'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const IconCircleArrowUp = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M9.5 10.5C9.99153 9.9943 11.2998 8 12 8M14.5 10.5C14.0085 9.9943 12.7002 8 12 8M12 8V16'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
 			strokeLinejoin='round'
 		/>
 	</svg>

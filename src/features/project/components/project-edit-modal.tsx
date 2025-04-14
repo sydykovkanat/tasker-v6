@@ -40,10 +40,10 @@ export function ProjectEditModal({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Создание проекта</DialogTitle>
+					<DialogTitle>Редактирование проекта</DialogTitle>
 
 					<DialogDescription>
-						Заполните поля для создания нового проекта.
+						Заполните поля для редактирования проекта.
 					</DialogDescription>
 				</DialogHeader>
 

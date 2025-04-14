@@ -47,6 +47,7 @@ export function ProjectCard({ project }: Props) {
 							defaultValues={{
 								name: project.name,
 								description: project.description,
+								departmentId: project.department.id.toString(),
 							}}
 						>
 							<Button size={'icon'}>

@@ -1,9 +1,21 @@
+import { motion } from 'framer-motion';
+
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
-import { TaskCard, TasksFilters } from '@/features/task/components';
+import {
+	CreateTaskModal,
+	TaskCard,
+	TasksFilters,
+} from '@/features/task/components';
 import { useGetTasks, useTasksFilters } from '@/features/task/hooks';
 
-import { ErrorBlock, Loading, PageTitles } from '@/shared/components/shared';
+import {
+	ErrorBlock,
+	IconNoteAdd,
+	Loading,
+	PageTitles,
+} from '@/shared/components/shared';
+import { Button } from '@/shared/components/ui';
 import { formatStatus, safeParse } from '@/shared/lib';
 
 interface Props {
@@ -40,7 +52,14 @@ export function FilteredTasks({ statusId }: Props) {
 				title={`Задачи со статусом "${formattedStatus.label}"`}
 				description={`Здесь вы можете просмотреть задачи, которые имеют статус "${formattedStatus.label}"`}
 				className={'px-4 py-2'}
-			/>
+			>
+				<CreateTaskModal>
+					<Button size={'lg'}>
+						<IconNoteAdd />
+						Создать задачу
+					</Button>
+				</CreateTaskModal>
+			</PageTitles>
 
 			<TasksFilters
 				onProjectChange={handleProjectChange}
@@ -64,7 +83,16 @@ export function FilteredTasks({ statusId }: Props) {
 				) : (
 					tasks.map((task) => (
 						<div key={task.id} className='mb-4 break-inside-avoid'>
-							<TaskCard task={task} />
+							<motion.div
+								key={task.id}
+								layout
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ duration: 0.3 }}
+							>
+								<TaskCard task={task} />
+							</motion.div>
 						</div>
 					))
 				)}
