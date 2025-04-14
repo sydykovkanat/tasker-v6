@@ -12,6 +12,7 @@ import {
 	NotFound,
 	OneTask,
 	Projects,
+	Statistics,
 	Subordinates,
 } from '@/pages';
 
@@ -21,7 +22,6 @@ export function App() {
 	if (!isAuthenticated) {
 		return <Auth />;
 	}
-
 	return (
 		<Layout>
 			<Routes>
@@ -43,6 +43,7 @@ export function App() {
 				<Route path={'/projects'} element={<Projects />} />
 				<Route path={'/calendar'} element={<Calendar />} />
 				<Route path={'/subordinates'} element={<Subordinates />} />
+				<Route path={'/statistics'} element={<Statistics />} />
 				<Route path={'*'} element={<NotFound />} />
 			</Routes>
 		</Layout>

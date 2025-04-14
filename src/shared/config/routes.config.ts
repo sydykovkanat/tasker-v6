@@ -2,6 +2,7 @@ import { JSX, SVGProps } from 'react';
 
 import {
 	IconCalendar,
+	IconChart,
 	IconFolder,
 	IconHome,
 	IconUsers,
@@ -49,5 +50,10 @@ export const routes: IRoute[] = [
 		url: '/subordinates',
 		label: 'Сотрудники',
 		icon: IconUsers,
+	},
+	{
+		url: '/statistics',
+		label: 'Статистика',
+		icon: IconChart,
 	},
 ];
