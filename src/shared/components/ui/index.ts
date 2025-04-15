@@ -15,4 +15,6 @@ export * from './dialog';
 export * from './textarea';
 export * from './badge';
 export * from './table';
+export * from './wobble-card';
+export * from './shiny-text';
 export * from './scroll-area';

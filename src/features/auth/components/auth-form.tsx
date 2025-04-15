@@ -63,11 +63,7 @@ export function AuthForm() {
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
-									<Input
-										placeholder={'Рабочая почта @shoro.kg'}
-										autoComplete={'off'}
-										{...field}
-									/>
+									<Input placeholder={'Рабочая почта @shoro.kg'} {...field} />
 								</FormControl>
 
 								<FormMessage />

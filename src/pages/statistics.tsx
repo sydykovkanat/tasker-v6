@@ -1,9 +1,7 @@
-import { PropsWithChildren } from 'react';
-
 import { useGetMyStatistics } from '@/features/statistics/hooks';
 
 import { ErrorBlock, Loading, PageTitles } from '@/shared/components/shared';
-import { CountUp } from '@/shared/components/ui';
+import { CountUp, ShinyText, WobbleCard } from '@/shared/components/ui';
 
 export function Statistics() {
 	const { isMyStatisticsLoading, myStatistics } = useGetMyStatistics();
@@ -30,45 +28,42 @@ export function Statistics() {
 					height: 'calc(100vh - 73px)',
 				}}
 			>
-				<StatisticBlock>
-					<div className={'text-5xl'}>
-						{<CountUp to={myStatistics.completedTasks} />}
-					</div>
-					<div className={'text-muted-foreground text-xl'}>Завершено задач</div>
-				</StatisticBlock>
+				<StatisticBlock
+					text={'Завершено задач'}
+					value={myStatistics.completedTasks}
+				/>
 
-				<StatisticBlock>
-					<div className={'text-5xl'}>
-						{<CountUp to={myStatistics.allTasks} />}
-					</div>
-					<div className={'text-muted-foreground text-xl'}>Всего задач</div>
-				</StatisticBlock>
+				<StatisticBlock text={'Всего задач'} value={myStatistics.allTasks} />
 
-				<StatisticBlock>
-					<div className={'text-5xl'}>
-						{
-							<div>
-								<CountUp to={myStatistics.percentCompletedTasks} />%
-							</div>
-						}
-					</div>
-					<div className={'text-muted-foreground text-xl'}>
-						Процент завершенных задач
-					</div>
-				</StatisticBlock>
+				<StatisticBlock
+					text={'Процент завершенных задач'}
+					value={myStatistics.percentCompletedTasks}
+					valueSuffix={'%'}
+				/>
 			</div>
 		</div>
 	);
 }
 
-function StatisticBlock({ children }: PropsWithChildren) {
+interface StatisticsBlockProps {
+	value: number;
+	valueSuffix?: string;
+	text: string;
+}
+
+function StatisticBlock({ value, text, valueSuffix }: StatisticsBlockProps) {
 	return (
-		<div
+		<WobbleCard
+			containerClassName={'rounded-4xl bg-primary border shadow-xl'}
 			className={
-				'bg-primary text-background flex flex-1 flex-col items-center justify-center rounded-3xl border text-center shadow-lg'
+				'bg-primary text-background flex flex-1 flex-col items-center justify-center rounded-4xl text-center'
 			}
 		>
-			{children}
-		</div>
+			<p className={'text-5xl'}>
+				<CountUp to={value} />
+				{valueSuffix}
+			</p>
+			<ShinyText text={text} />
+		</WobbleCard>
 	);
 }
