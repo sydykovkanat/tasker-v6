@@ -30,7 +30,7 @@ export function Statistics() {
 				}}
 			>
 				<StatisticBlock
-					containerClassName={'h-[90%]'}
+					containerClassName={'h-[88%]'}
 					text={'Завершено задач'}
 					value={myStatistics.completedTasks}
 				/>
@@ -43,7 +43,7 @@ export function Statistics() {
 				/>
 
 				<StatisticBlock
-					containerClassName={'h-[84%]'}
+					containerClassName={'h-[82%]'}
 					text={'Всего задач'}
 					value={myStatistics.allTasks}
 				/>
