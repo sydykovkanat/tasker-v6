@@ -1,9 +1,21 @@
+import { Check, ChevronsUpDown } from 'lucide-react';
+
 import { useAuthStore } from '@/features/auth/store';
 import { IProject } from '@/features/project/types';
 import { ISubordinate } from '@/features/subordinate/types';
 
 import {
+	Button,
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
 	Input,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
 	Select,
 	SelectContent,
 	SelectItem,
@@ -11,6 +23,7 @@ import {
 	SelectValue,
 } from '@/shared/components/ui';
 import { formatStatus } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	projects?: IProject[];
@@ -41,6 +54,12 @@ export function TasksFilters({
 }: Props) {
 	const user = useAuthStore((state) => state.user);
 	const isAdmin = user?.roles.includes('ADMIN');
+	const selectedPerformerName =
+		performerId === 'all'
+			? 'Все исполнители'
+			: subordinates.find(
+					(subordinate) => subordinate.id.toString() === performerId,
+				)?.name;
 
 	return (
 		<div className={'grid grid-cols-5 gap-x-4 px-4 pt-4'}>
@@ -73,30 +92,70 @@ export function TasksFilters({
 			</Select>
 
 			{isAdmin && (
-				<Select
-					disabled={!subordinates}
-					value={performerId}
-					onValueChange={onSubordinateChange}
-				>
-					<SelectTrigger size={'lg'} className={'w-full'}>
-						<SelectValue
-							placeholder={projects ? 'Выберите сотрудника' : 'Нет сотрудников'}
-						/>
-					</SelectTrigger>
+				<Popover>
+					<PopoverTrigger asChild>
+						<Button
+							variant='outline'
+							role='combobox'
+							size={'lg'}
+							className='justify-between font-normal'
+						>
+							{selectedPerformerName || 'Выберите исполнителя'}
+							<ChevronsUpDown className='opacity-35' />
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className='w-[400px] p-0'>
+						<Command>
+							<CommandInput placeholder='Search framework...' className='h-9' />
+							<CommandList>
+								<CommandEmpty>Исполнители не найдены.</CommandEmpty>
+								<CommandGroup>
+									<CommandItem
+										value={'all'}
+										onSelect={(currentValue) => {
+											onSubordinateChange(currentValue);
+										}}
+										className={'justify-start text-start'}
+									>
+										Все исполнители
+										<Check
+											className={cn(
+												'ml-auto',
+												performerId === 'all' ? 'opacity-100' : 'opacity-0',
+											)}
+										/>
+									</CommandItem>
 
-					<SelectContent>
-						<SelectItem value={'all'}>Все сотрудники</SelectItem>
-
-						{subordinates?.map((subordinate) => (
-							<SelectItem
-								key={subordinate.id}
-								value={subordinate.id.toString()}
-							>
-								{subordinate.name}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
+									{subordinates.map((subordinate) => (
+										<CommandItem
+											className={'truncate text-nowrap'}
+											key={subordinate.id}
+											value={subordinate.name}
+											onSelect={(currentValue) => {
+												const selectedPerformerId = subordinates.find(
+													(subordinate) => subordinate.name === currentValue,
+												)?.id;
+												if (selectedPerformerId) {
+													onSubordinateChange(selectedPerformerId.toString());
+												}
+											}}
+										>
+											{subordinate.name}
+											<Check
+												className={cn(
+													'ml-auto',
+													performerId === subordinate.id.toString()
+														? 'opacity-100'
+														: 'opacity-0',
+												)}
+											/>
+										</CommandItem>
+									))}
+								</CommandGroup>
+							</CommandList>
+						</Command>
+					</PopoverContent>
+				</Popover>
 			)}
 
 			{!isStatusDisabled && (
