@@ -1,2 +1,2 @@
-bun run format
-git add .
+git add ./
+npx lint-staged
