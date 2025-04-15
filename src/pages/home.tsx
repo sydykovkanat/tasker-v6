@@ -24,9 +24,11 @@ export function Home() {
 		handleProjectChange,
 		handleStatusChange,
 		handleSubordinateChange,
+		handleQueryChange,
 		performerId,
 		projectId,
 		statusId,
+		query,
 	} = useTasksFilters();
 
 	const { isTasksLoading, tasks } = useGetTasks(
@@ -97,31 +99,46 @@ export function Home() {
 				performerId={performerId}
 				statusId={statusId}
 				onStatusChange={handleStatusChange}
+				query={query}
+				onQueryChange={handleQueryChange}
 			/>
 
 			{statusId !== 'all' ? (
 				<div className={'p-4'}>
-					<h5 className={'mb-4 text-lg'}>
-						Задачи со статусом "{formattedStatus.label}"
-						{sortedTasks.length > 0 && ` (${sortedTasks.length})`}
+					<h5 className={'mb-4 flex items-center gap-x-2 text-lg'}>
+						<span>Задачи со статусом "{formattedStatus.label}"</span>
+
+						<span className={'text-muted-foreground'}>
+							({sortedTasks.length})
+						</span>
 					</h5>
 
 					<AnimatePresence mode={'popLayout'}>
 						<div className='columns-2 gap-4'>
-							{sortedTasks.map((task) => (
-								<div key={task.id} className='mb-4 break-inside-avoid'>
-									<motion.div
-										key={task.id}
-										layout
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										exit={{ opacity: 0, scale: 0.95 }}
-										transition={{ duration: 0.3 }}
-									>
-										<TaskCard task={task} />
-									</motion.div>
-								</div>
-							))}
+							{sortedTasks.length === 0 ? (
+								<p
+									className={
+										'text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+									}
+								>
+									Список задач со статусом "{formattedStatus.label}" пуст.
+								</p>
+							) : (
+								sortedTasks.map((task) => (
+									<div key={task.id} className='mb-4 break-inside-avoid'>
+										<motion.div
+											key={task.id}
+											layout
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											exit={{ opacity: 0, scale: 0.95 }}
+											transition={{ duration: 0.3 }}
+										>
+											<TaskCard task={task} />
+										</motion.div>
+									</div>
+								))
+							)}
 						</div>
 					</AnimatePresence>
 				</div>

@@ -22,6 +22,8 @@ interface Props {
 	statusId?: string;
 	onStatusChange?: (statusId: string) => void;
 	isStatusDisabled?: boolean;
+	query: string;
+	onQueryChange: (query: string) => void;
 }
 
 export function TasksFilters({
@@ -34,13 +36,19 @@ export function TasksFilters({
 	statusId,
 	onStatusChange,
 	isStatusDisabled,
+	query,
+	onQueryChange,
 }: Props) {
 	const user = useAuthStore((state) => state.user);
 	const isAdmin = user?.roles.includes('ADMIN');
 
 	return (
 		<div className={'grid grid-cols-5 gap-x-4 px-4 pt-4'}>
-			<Input placeholder={'Поиск...'} />
+			<Input
+				placeholder={'Поиск...'}
+				value={query}
+				onChange={(e) => onQueryChange(e.target.value)}
+			/>
 
 			<Select
 				disabled={!projects}

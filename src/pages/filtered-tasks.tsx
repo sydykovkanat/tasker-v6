@@ -26,8 +26,10 @@ export function FilteredTasks({ statusId }: Props) {
 	const {
 		projectId,
 		performerId,
+		query,
 		handleSubordinateChange,
 		handleProjectChange,
+		handleQueryChange,
 	} = useTasksFilters();
 	const formattedStatus = formatStatus(statusId);
 	const { tasks, isTasksLoading } = useGetTasks(
@@ -69,6 +71,8 @@ export function FilteredTasks({ statusId }: Props) {
 				projectId={projectId}
 				performerId={performerId}
 				isStatusDisabled={true}
+				query={query}
+				onQueryChange={handleQueryChange}
 			/>
 
 			<section className='columns-2 gap-4 p-4'>

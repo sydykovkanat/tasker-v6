@@ -5,6 +5,7 @@ interface Filters {
 	projectId?: string;
 	performerId?: string;
 	statusId?: string;
+	query: string;
 }
 
 export function useTasksFilters() {
@@ -13,11 +14,13 @@ export function useTasksFilters() {
 	const projectId = searchParams.get('projectId') || 'all';
 	const performerId = searchParams.get('performerId') || 'all';
 	const statusId = searchParams.get('statusId') || 'all';
+	const query = searchParams.get('query') || '';
 
 	const [filters, setFilters] = useState<Filters>({
 		statusId,
 		projectId,
 		performerId,
+		query,
 	});
 
 	const handleProjectChange = (newProjectId: string) => {
@@ -74,12 +77,32 @@ export function useTasksFilters() {
 		setSearchParams(newSearchParams);
 	};
 
+	const handleQueryChange = (newQuery: string) => {
+		const newSearchParams = new URLSearchParams(searchParams);
+		if (newQuery && newQuery !== '') {
+			setFilters((prev) => ({
+				...prev,
+				query: newQuery,
+			}));
+			newSearchParams.set('query', newQuery);
+		} else {
+			setFilters((prev) => ({
+				...prev,
+				query: '',
+			}));
+			newSearchParams.delete('query');
+		}
+		setSearchParams(newSearchParams);
+	};
+
 	return {
 		handleProjectChange,
 		handleSubordinateChange,
 		handleStatusChange,
+		handleQueryChange,
 		projectId: filters.projectId,
 		performerId: filters.performerId,
 		statusId: filters.statusId,
+		query: filters.query,
 	};
 }
