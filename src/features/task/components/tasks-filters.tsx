@@ -106,7 +106,7 @@ export function TasksFilters({
 					</PopoverTrigger>
 					<PopoverContent className='w-[400px] p-0'>
 						<Command>
-							<CommandInput placeholder='Search framework...' className='h-9' />
+							<CommandInput placeholder='Поиск по имени...' className='h-9' />
 							<CommandList>
 								<CommandEmpty>Исполнители не найдены.</CommandEmpty>
 								<CommandGroup>
