@@ -41,6 +41,7 @@ import { cn } from '@/shared/utils';
 interface Props {
 	onSubmit: (data: TaskSchemaType) => void;
 	isLoading: boolean;
+	type?: 'create' | 'edit';
 	defaultValues?: {
 		taskName?: string;
 		description?: string;
@@ -55,7 +56,7 @@ interface Props {
 	};
 }
 
-export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
+export function TaskForm({ onSubmit, isLoading, defaultValues, type }: Props) {
 	const user = useAuthStore((state) => state.user);
 
 	const form = useForm<TaskSchemaType>({
@@ -93,7 +94,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 
 	const selectedUsers = form
 		.watch('performerId')
-		.filter((id) => id !== 'undefined')
+		?.filter((id) => id !== 'undefined')
 		.map((id) => {
 			const user = users?.find((user) => user.id.toString() === id);
 
@@ -103,7 +104,10 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 			};
 		});
 	const notSelectedUsers = users?.filter((user) => {
-		return !selectedUsers.some((selectedUser) => selectedUser.id === user.id);
+		return (
+			selectedUsers &&
+			!selectedUsers.some((selectedUser) => selectedUser.id === user.id)
+		);
 	});
 
 	return (
@@ -152,60 +156,66 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 							)}
 						/>
 
-						<FormField
-							control={form.control}
-							name={'dates'}
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Сроки выполнения</FormLabel>
+						{type === 'create' && (
+							<FormField
+								control={form.control}
+								name={'dates'}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Сроки выполнения</FormLabel>
 
-									<FormControl>
-										<Popover modal={true}>
-											<PopoverTrigger asChild disabled={isLoading}>
-												<Button
-													disabled={isLoading}
-													size={'lg'}
-													id='date'
-													variant={'outline'}
-													className={'justify-start font-normal capitalize'}
-												>
-													<CalendarIcon />
-													{dates?.from ? (
-														dates?.to ? (
-															<>
-																{date(dates?.from, 'LLL dd, y')} -{' '}
-																{date(dates?.to, 'LLL dd, y')}
-															</>
+										<FormControl>
+											<Popover modal={true}>
+												<PopoverTrigger asChild disabled={isLoading}>
+													<Button
+														disabled={isLoading}
+														size={'lg'}
+														id='date'
+														variant={'outline'}
+														className={'justify-start font-normal capitalize'}
+													>
+														<CalendarIcon />
+														{dates?.from ? (
+															dates?.to ? (
+																<>
+																	{date(dates?.from, 'LLL dd, y')} -{' '}
+																	{date(dates?.to, 'LLL dd, y')}
+																</>
+															) : (
+																date(dates?.from, 'LLL dd, y')
+															)
 														) : (
-															date(dates?.from, 'LLL dd, y')
-														)
-													) : (
-														<span
-															className={'lowercase first-letter:uppercase'}
-														>
-															Выберите даты выполнения задачи
-														</span>
-													)}
-												</Button>
-											</PopoverTrigger>
-											<PopoverContent className='w-auto p-0' align='start'>
-												<Calendar
-													initialFocus
-													mode='range'
-													defaultMonth={dates?.from}
-													selected={dates}
-													onSelect={field.onChange}
-													disabled={(dates) => dates <= new Date()}
-													numberOfMonths={2}
-												/>
-											</PopoverContent>
-										</Popover>
-									</FormControl>
+															<span
+																className={'lowercase first-letter:uppercase'}
+															>
+																Выберите даты выполнения задачи
+															</span>
+														)}
+													</Button>
+												</PopoverTrigger>
+												<PopoverContent className='w-auto p-0' align='start'>
+													<Calendar
+														initialFocus
+														mode='range'
+														defaultMonth={dates?.from}
+														selected={dates}
+														onSelect={field.onChange}
+														disabled={(date) => {
+															const today = new Date();
+															today.setHours(0, 0, 0, 0);
+															return date < today;
+														}}
+														numberOfMonths={2}
+													/>
+												</PopoverContent>
+											</Popover>
+										</FormControl>
 
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						)}
 					</div>
 
 					<div className={'flex flex-1 flex-col gap-4'}>
@@ -354,7 +364,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 													{
 														form
 															.watch('performerId')
-															.filter((item) => item !== 'undefined')?.length
+															?.filter((item) => item !== 'undefined')?.length
 													}
 													)
 												</span>
@@ -388,7 +398,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues }: Props) {
 									</FormControl>
 
 									<div className={'flex flex-wrap items-center gap-2'}>
-										{selectedUsers.map((user) => (
+										{selectedUsers?.map((user) => (
 											<button
 												type={'button'}
 												className={'group relative rounded-full'}

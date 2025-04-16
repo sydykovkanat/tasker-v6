@@ -53,6 +53,7 @@ export function EditTaskModal({
 				<TaskForm
 					onSubmit={handleEdit}
 					isLoading={isEditTaskLoading || isTaskLoading}
+					type={'edit'}
 					defaultValues={{
 						taskName: task.taskName,
 						priorityId: task.priority.id.toString(),

@@ -35,7 +35,11 @@ export function CreateTaskModal({ children }: PropsWithChildren) {
 					</DialogDescription>
 				</DialogHeader>
 
-				<TaskForm onSubmit={handleCreate} isLoading={isCreateTaskLoading} />
+				<TaskForm
+					type={'create'}
+					onSubmit={handleCreate}
+					isLoading={isCreateTaskLoading}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

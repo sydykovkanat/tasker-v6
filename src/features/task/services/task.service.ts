@@ -149,6 +149,19 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async updateDates(taskId: number, dates: { from: Date; to: Date }) {
+		return (
+			await instance({
+				method: 'PUT',
+				url: `/tasks/${taskId}/date`,
+				data: {
+					startDate: dates.from,
+					endDate: dates.to,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();

@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react';
 import { useAuthStore } from '@/features/auth/store';
 import { useGetTags } from '@/features/tag/hooks';
 import { DeleteTaskModal } from '@/features/task/components';
+import { EditTaskDatesModal } from '@/features/task/components/edit-task-dates-modal';
 import {
 	useEditTaskPriority,
 	useEditTaskStatus,
@@ -11,6 +12,7 @@ import {
 import { ITask } from '@/features/task/types';
 
 import {
+	IconCalendar,
 	IconCancel,
 	IconCircle,
 	IconCircleArrowDataTransferHorizontal,
@@ -193,6 +195,19 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 								))}
 						</ContextMenuSubContent>
 					</ContextMenuSub>
+				)}
+
+				{isAccess && (
+					<EditTaskDatesModal taskId={task.id}>
+						<Button
+							variant={'ghost'}
+							size={'sm'}
+							className={'w-full justify-start font-normal'}
+						>
+							<IconCalendar className={'text-muted-foreground'} />
+							Изменить сроки
+						</Button>
+					</EditTaskDatesModal>
 				)}
 
 				{!isCompleted && (
