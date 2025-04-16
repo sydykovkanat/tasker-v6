@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 
 import { useAuthStore } from '@/features/auth/store';
 import { useGetDepartments } from '@/features/department/hooks';
-import { ProjectSchema, ProjectSchemaType } from '@/features/project/schemas';
+import { TagSchema, TagSchemaType } from '@/features/tag/schemas';
 
-import { IconFolderAdd } from '@/shared/components/shared';
+import { IconAdd } from '@/shared/components/shared';
 import {
 	Button,
 	Form,
@@ -23,16 +23,16 @@ import {
 } from '@/shared/components/ui';
 
 interface Props {
-	onSubmit: (body: ProjectSchemaType) => void;
+	onSubmit: (body: TagSchemaType) => void;
 	isLoading?: boolean;
-	defaultValues?: ProjectSchemaType;
+	defaultValues?: TagSchemaType;
 }
 
-export function ProjectForm({ onSubmit, isLoading, defaultValues }: Props) {
+export function TagForm({ onSubmit, isLoading, defaultValues }: Props) {
 	const user = useAuthStore((state) => state.user);
 
-	const form = useForm<ProjectSchemaType>({
-		resolver: zodResolver(ProjectSchema),
+	const form = useForm<TagSchemaType>({
+		resolver: zodResolver(TagSchema),
 		defaultValues: {
 			name: defaultValues?.name ?? '',
 			description: defaultValues?.description ?? '',
@@ -40,7 +40,7 @@ export function ProjectForm({ onSubmit, isLoading, defaultValues }: Props) {
 		},
 	});
 
-	const handleSubmit = (data: ProjectSchemaType) => {
+	const handleSubmit = (data: TagSchemaType) => {
 		if (user?.roles.includes('ADMIN')) {
 			if (!data.departmentId) {
 				form.setError('departmentId', {
@@ -104,7 +104,6 @@ export function ProjectForm({ onSubmit, isLoading, defaultValues }: Props) {
 						</FormItem>
 					)}
 				/>
-
 				{user?.roles.includes('ADMIN') && (
 					<FormField
 						control={form.control}
@@ -139,14 +138,13 @@ export function ProjectForm({ onSubmit, isLoading, defaultValues }: Props) {
 						)}
 					/>
 				)}
-
 				<Button
 					loading={isLoading}
 					type={'submit'}
 					size={'lg'}
 					className={'w-full'}
 				>
-					<IconFolderAdd />
+					<IconAdd />
 					Сохранить
 				</Button>
 			</form>

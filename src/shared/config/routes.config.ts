@@ -5,6 +5,7 @@ import {
 	IconChart,
 	IconFolder,
 	IconHome,
+	IconTag,
 	IconUsers,
 } from '../components/shared/icons';
 
@@ -55,5 +56,10 @@ export const routes: IRoute[] = [
 		url: '/statistics',
 		label: 'Статистика',
 		icon: IconChart,
+	},
+	{
+		url: '/tags',
+		label: 'Теги',
+		icon: IconTag,
 	},
 ];

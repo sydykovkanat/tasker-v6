@@ -1,5 +1,6 @@
 export * from './home';
 export * from './statistics';
+export * from './tags';
 export * from './one-task';
 export * from './filtered-tasks';
 export * from './projects';

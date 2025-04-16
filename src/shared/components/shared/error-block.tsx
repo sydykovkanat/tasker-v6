@@ -1,4 +1,4 @@
-import { IconArrowLeft } from '@/shared/components/shared/icons.tsx';
+import { IconReload } from '@/shared/components/shared';
 import { Button } from '@/shared/components/ui';
 
 export function ErrorBlock() {
@@ -10,7 +10,8 @@ export function ErrorBlock() {
 				<h1 className={'text-2xl'}>Произошла ошибка</h1>
 
 				<p className={'text-muted-foreground max-w-sm'}>
-					Вероятно, запрос не удался из-за проблем с сетью или сервером
+					Вероятно, запрос не удался из-за проблем с сетью или сервером.
+					Попробуйте обновить страницу или вернуться позже.
 				</p>
 
 				<Button
@@ -18,7 +19,7 @@ export function ErrorBlock() {
 					variant={'outline'}
 					className={'mt-2'}
 				>
-					<IconArrowLeft />
+					<IconReload />
 					Обновить страницу
 				</Button>
 			</div>

@@ -8,6 +8,7 @@ import {
 	IconDescription,
 	IconPriority,
 	IconStatus,
+	IconTag,
 	IconView,
 	IconViewOffSlash,
 	PriorityBadge,
@@ -54,6 +55,10 @@ export function TaskInfo({ task }: Props) {
 				value={<PriorityBadge priority={task.priority} />}
 				icon={IconPriority}
 			/>
+
+			{task.tagDto && (
+				<InfoBlock label={'Тег'} value={task.tagDto.name} icon={IconTag} />
+			)}
 
 			{isOneDayDeadline ? (
 				<InfoBlock

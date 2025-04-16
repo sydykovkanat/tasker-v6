@@ -137,6 +137,18 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async updateTag(taskId: number, tagId: number | null) {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/${taskId}/tags`,
+				data: {
+					tagId,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();

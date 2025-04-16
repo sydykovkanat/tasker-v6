@@ -1,11 +1,17 @@
 import { PropsWithChildren } from 'react';
 
 import { useAuthStore } from '@/features/auth/store';
-import { DeleteTaskModal } from '@/features/task/components/delete-task-modal';
-import { useEditTaskPriority, useEditTaskStatus } from '@/features/task/hooks';
+import { useGetTags } from '@/features/tag/hooks';
+import { DeleteTaskModal } from '@/features/task/components';
+import {
+	useEditTaskPriority,
+	useEditTaskStatus,
+	useUpdateTaskTag,
+} from '@/features/task/hooks';
 import { ITask } from '@/features/task/types';
 
 import {
+	IconCancel,
 	IconCircle,
 	IconCircleArrowDataTransferHorizontal,
 	IconCircleArrowDataTransferVertical,
@@ -13,6 +19,7 @@ import {
 	IconCircleArrowRight,
 	IconCircleArrowUp,
 	IconDelete,
+	IconTag,
 } from '@/shared/components/shared';
 import {
 	Button,
@@ -36,6 +43,8 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 	const { editTaskPriority, isEditTaskPriorityLoading } = useEditTaskPriority(
 		task.id,
 	);
+	const { tags, isTagsLoading } = useGetTags();
+	const { updateTag, isUpdateTagLoading } = useUpdateTaskTag();
 
 	const user = useAuthStore((state) => state.user);
 	const isAccess =
@@ -133,6 +142,55 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 									Высокий
 								</ContextMenuItem>
 							)}
+						</ContextMenuSubContent>
+					</ContextMenuSub>
+				)}
+
+				{isAccess && (
+					<ContextMenuSub>
+						<ContextMenuSubTrigger
+							disabled={isTagsLoading || isUpdateTagLoading}
+							className={'flex items-center gap-x-2'}
+						>
+							<IconTag className={'text-muted-foreground'} />
+							Тег задачи
+						</ContextMenuSubTrigger>
+
+						<ContextMenuSubContent>
+							{tags &&
+								(tags.length === 0 ? (
+									<ContextMenuItem disabled className={'text-muted-foreground'}>
+										Нет тегов
+									</ContextMenuItem>
+								) : (
+									<>
+										{tags?.map((tag) => (
+											<ContextMenuItem
+												key={tag.id}
+												onClick={() => {
+													updateTag({
+														taskId: task.id,
+														tagId: tag.id,
+													});
+												}}
+											>
+												{tag.name}
+											</ContextMenuItem>
+										))}
+
+										<ContextMenuItem
+											onClick={() => {
+												updateTag({
+													taskId: task.id,
+													tagId: null,
+												});
+											}}
+										>
+											<IconCancel />
+											Отвязать тег
+										</ContextMenuItem>
+									</>
+								))}
 						</ContextMenuSubContent>
 					</ContextMenuSub>
 				)}

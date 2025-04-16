@@ -6,6 +6,8 @@ import { ITask } from '@/features/task/types';
 
 import {
 	IconArrowsRight,
+	IconFolder,
+	IconTag,
 	IconView,
 	IconViewOffSlash,
 	PriorityBadge,
@@ -30,14 +32,24 @@ export function TaskCard({ task }: Props) {
 			<Link to={`/tasks/${task.id}`}>
 				<Card className={'py-4'}>
 					<CardContent className={'space-y-2.5 px-4'}>
-						{(task.project || task.status.id === 4) && (
+						{(task.project || task.status.id === 4 || task.tagDto) && (
 							<div className={'flex items-center gap-x-2'}>
 								{task.project && (
 									<Badge
 										variant={'secondary'}
 										className={'border-border border-dashed'}
 									>
+										<IconFolder />
 										{task.project.name}
+									</Badge>
+								)}
+								{task.tagDto && (
+									<Badge
+										variant={'secondary'}
+										className={'border-border border-dashed'}
+									>
+										<IconTag />
+										{task.tagDto.name}
 									</Badge>
 								)}
 								{task.status.id === 4 && (

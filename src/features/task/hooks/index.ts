@@ -1,6 +1,7 @@
 export * from './use-get-tasks';
 export * from './use-get-task-subtasks';
 export * from './use-create-subtask';
+export * from './use-update-task-tag';
 export * from './use-get-task';
 export * from './use-delete-task';
 export * from './use-tasks-filters';

@@ -1,6 +1,7 @@
 import { IPerson } from '@/features/auth/types';
 import { IDepartment } from '@/features/department/types';
 import { IProject } from '@/features/project/types';
+import { ITag } from '@/features/tag/types';
 
 import { IFile, IPriority, IStatus } from '@/shared/types';
 
@@ -25,4 +26,5 @@ export interface ITask {
 	reason: string | null;
 	rejectedDateTime: string | null;
 	rejectedAuthor: IPerson | null;
+	tagDto: ITag | null;
 }

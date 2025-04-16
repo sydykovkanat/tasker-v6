@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { ProjectCard, ProjectCreateModal } from '@/features/project/components';
-import { useGetProjects } from '@/features/project/hooks';
+import { TagCard } from '@/features/tag/components';
+import { TagCreateModal } from '@/features/tag/components/tag-create-modal';
+import { useGetTags } from '@/features/tag/hooks';
 
 import {
 	ErrorBlock,
@@ -11,52 +12,51 @@ import {
 } from '@/shared/components/shared';
 import { Button } from '@/shared/components/ui';
 
-export function Projects() {
-	const { isProjectsLoading, projects } = useGetProjects();
+export function Tags() {
+	const { tags, isTagsLoading } = useGetTags();
 
-	if (isProjectsLoading) {
+	if (isTagsLoading) {
 		return <Loading />;
 	}
 
-	if (!projects) {
+	if (!tags) {
 		return <ErrorBlock />;
 	}
 
 	return (
 		<div>
 			<PageTitles
-				title={'Проекты'}
-				description={'Список всех проектов вашего отдела'}
+				title={'Теги'}
+				description={'Список всех тегов вашего отдела'}
 				className={'px-4 py-2'}
 			>
-				<ProjectCreateModal>
+				<TagCreateModal>
 					<Button size={'lg'}>
-						<IconFolderAdd /> Создать проект
+						<IconFolderAdd /> Создать тег
 					</Button>
-				</ProjectCreateModal>
+				</TagCreateModal>
 			</PageTitles>
 
 			<section className={'grid grid-cols-4 gap-4 p-4'}>
 				<AnimatePresence mode={'popLayout'}>
-					{projects.length === 0 ? (
+					{tags.length === 0 ? (
 						<p
 							className={
 								'text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
 							}
 						>
-							Нет проектов. Создайте проект, нажав на кнопку в правом верхнем
-							углу.
+							Нет тегов. Создайте тег, нажав на кнопку в правом верхнем углу.
 						</p>
 					) : (
-						projects.map((project) => (
+						tags.map((tag) => (
 							<motion.div
-								key={project.id}
+								key={tag.id}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.1 }}
 							>
-								<ProjectCard project={project} />
+								<TagCard tag={tag} />
 							</motion.div>
 						))
 					)}

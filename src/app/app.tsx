@@ -14,6 +14,7 @@ import {
 	Projects,
 	Statistics,
 	Subordinates,
+	Tags,
 } from '@/pages';
 
 export function App() {
@@ -44,6 +45,7 @@ export function App() {
 				<Route path={'/calendar'} element={<Calendar />} />
 				<Route path={'/subordinates'} element={<Subordinates />} />
 				<Route path={'/statistics'} element={<Statistics />} />
+				<Route path={'/tags'} element={<Tags />} />
 				<Route path={'*'} element={<NotFound />} />
 			</Routes>
 		</Layout>
