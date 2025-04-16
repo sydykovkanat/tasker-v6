@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 
+import { useAuthStore } from '@/features/auth/store';
 import {
 	CreateSubtaskModal,
 	EditTaskModal,
@@ -24,6 +25,7 @@ export function OneTask() {
 	const { id } = useParams<{ id: string }>() as { id: string };
 	const { isTaskLoading, task } = useGetTask(parseInt(id));
 	const { subtasks, isSubtasksLoading } = useGetTaskSubtasks(parseInt(id));
+	const user = useAuthStore((state) => state.user);
 
 	if (isTaskLoading) {
 		return <Loading />;
@@ -32,6 +34,11 @@ export function OneTask() {
 	if (!task) {
 		return <ErrorBlock />;
 	}
+
+	const isAccess =
+		user?.roles.includes('ADMIN') ||
+		task.performer.id === user?.id ||
+		task.author.id === user?.id;
 
 	return (
 		<main>
@@ -42,12 +49,14 @@ export function OneTask() {
 				isBackButton
 			>
 				<div className={'flex items-center gap-x-2'}>
-					<EditTaskModal taskId={task.id}>
-						<Button size={'lg'} variant={'outline'}>
-							<IconNoteEdit />
-							Редактировать
-						</Button>
-					</EditTaskModal>
+					{isAccess && (
+						<EditTaskModal taskId={task.id}>
+							<Button size={'lg'} variant={'outline'}>
+								<IconNoteEdit />
+								Редактировать
+							</Button>
+						</EditTaskModal>
+					)}
 
 					<TaskHistoryModal taskId={task.id}>
 						<Button size={'lg'} variant={'outline'}>
