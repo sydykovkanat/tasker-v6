@@ -392,6 +392,38 @@ export const IconArrowsRight = (props: React.SVGProps<SVGSVGElement>) => (
 	</svg>
 );
 
+export const IconPriority = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z'
+			stroke='currentColor'
+			strokeWidth='2'
+		/>
+		<path
+			d='M11.992 16H12.001'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M12 13L12 8.99997'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
 export const IconStatus = (props: React.SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
@@ -716,6 +748,30 @@ export const IconView = (props: React.SVGProps<SVGSVGElement>) => (
 			d='M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z'
 			stroke='currentColor'
 			strokeWidth='1.7'
+		/>
+	</svg>
+);
+
+export const IconDescription = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color={'currentColor'}
+		fill={'none'}
+		{...props}
+	>
+		<path
+			d='M10.6119 5.00008L10.0851 7M12.2988 2.76313C12.713 3.49288 12.4672 4.42601 11.7499 4.84733C11.0326 5.26865 10.1153 5.01862 9.70118 4.28887C9.28703 3.55912 9.53281 2.62599 10.2501 2.20467C10.9674 1.78334 11.8847 2.03337 12.2988 2.76313Z'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		<path
+			d='M13 21.998C12.031 20.8176 10.5 18 8.5 18C7.20975 18.1059 6.53573 19.3611 5.84827 20.3287M5.84827 20.3287C5.45174 19.961 5.30251 19.4126 5.00406 18.3158L3.26022 11.9074C2.5584 9.32827 2.20749 8.0387 2.80316 7.02278C3.39882 6.00686 4.70843 5.66132 7.32766 4.97025L9.5 4.39708M5.84827 20.3287C6.2448 20.6965 6.80966 20.8103 7.9394 21.0379L12.0813 21.8725C12.9642 22.0504 12.9721 22.0502 13.8426 21.8205L16.6723 21.0739C19.2916 20.3828 20.6012 20.0373 21.1968 19.0214C21.7925 18.0055 21.4416 16.7159 20.7398 14.1368L19.0029 7.75375C18.301 5.17462 17.9501 3.88506 16.9184 3.29851C16.0196 2.78752 14.9098 2.98396 12.907 3.5'
+			stroke='currentColor'
+			strokeWidth='2'
 		/>
 	</svg>
 );

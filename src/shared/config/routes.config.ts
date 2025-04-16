@@ -1,4 +1,4 @@
-import { JSX, SVGProps } from 'react';
+import { IHugeIcon } from '@/shared/types';
 
 import {
 	IconCalendar,
@@ -11,7 +11,7 @@ import {
 export interface IRoute {
 	url: string;
 	label: string;
-	icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+	icon?: IHugeIcon;
 }
 
 export const routes: IRoute[] = [

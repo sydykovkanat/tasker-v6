@@ -1,12 +1,14 @@
 import { useParams } from 'react-router-dom';
 
 import {
+	CreateSubtaskModal,
 	EditTaskModal,
 	TaskAssignedCard,
+	TaskCard,
 	TaskHistoryModal,
 	TaskInfo,
 } from '@/features/task/components';
-import { useGetTask } from '@/features/task/hooks';
+import { useGetTask, useGetTaskSubtasks } from '@/features/task/hooks';
 
 import {
 	ErrorBlock,
@@ -21,6 +23,7 @@ import { Button } from '@/shared/components/ui';
 export function OneTask() {
 	const { id } = useParams<{ id: string }>() as { id: string };
 	const { isTaskLoading, task } = useGetTask(parseInt(id));
+	const { subtasks, isSubtasksLoading } = useGetTaskSubtasks(parseInt(id));
 
 	if (isTaskLoading) {
 		return <Loading />;
@@ -68,13 +71,30 @@ export function OneTask() {
 						description={'Список подзадач'}
 						className={'px-4 py-2'}
 					>
-						<Button size={'lg'}>
-							<IconNoteAdd />
-							Создать подзадачу
-						</Button>
+						<CreateSubtaskModal taskId={parseInt(id)}>
+							<Button size={'lg'}>
+								<IconNoteAdd />
+								Создать подзадачу
+							</Button>
+						</CreateSubtaskModal>
 					</PageTitles>
 
-					<div>{/* Здесь будет список подзадач */}</div>
+					<div className={'relative flex min-h-[80%] flex-col gap-y-4 p-4'}>
+						{isSubtasksLoading ? (
+							<Loading />
+						) : !subtasks ? (
+							<ErrorBlock />
+						) : subtasks.length === 0 ? (
+							<p className={'text-muted-foreground text-center'}>
+								У задачи нет подзадач. Вы можете создать их, нажав на кнопку
+								"Создать подзадачу" выше.
+							</p>
+						) : (
+							subtasks.map((subtasks) => (
+								<TaskCard key={subtasks.id} task={subtasks} />
+							))
+						)}
+					</div>
 				</div>
 			</div>
 		</main>

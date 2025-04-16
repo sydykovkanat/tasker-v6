@@ -11,6 +11,7 @@ export function useDeleteTask() {
 		mutationFn: async (taskId: number) => await taskService.delete(taskId),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['tasks'] });
+			await queryClient.invalidateQueries({ queryKey: ['subtasks'] });
 
 			toast.success('Задача успешно удалена', {
 				description: 'Задача была успешно удалена из списка задач',

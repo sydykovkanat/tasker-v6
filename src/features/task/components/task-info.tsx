@@ -2,8 +2,19 @@ import { ReactNode } from 'react';
 
 import { ITask } from '@/features/task/types';
 
-import { PriorityBadge } from '@/shared/components/shared';
+import {
+	IconCalendar,
+	IconCancel,
+	IconDescription,
+	IconPriority,
+	IconStatus,
+	IconView,
+	IconViewOffSlash,
+	PriorityBadge,
+} from '@/shared/components/shared';
 import { date, formatStatus } from '@/shared/lib';
+import { IHugeIcon } from '@/shared/types';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	task: ITask;
@@ -12,6 +23,9 @@ interface Props {
 interface InfoBlockProps {
 	label: string;
 	value: string | ReactNode;
+	icon?: IHugeIcon;
+	titleClassName?: string;
+	valueClassName?: string;
 }
 
 export function TaskInfo({ task }: Props) {
@@ -20,15 +34,33 @@ export function TaskInfo({ task }: Props) {
 
 	return (
 		<div className={'space-y-4'}>
-			<InfoBlock label={'Статус'} value={formatStatus(task.status.id).label} />
+			{task.status.id === 4 && task.reason && (
+				<InfoBlock
+					label={'Причина отклонения'}
+					value={task.reason}
+					icon={IconCancel}
+					titleClassName={'text-destructive'}
+				/>
+			)}
+
+			<InfoBlock
+				label={'Статус'}
+				value={formatStatus(task.status.id).label}
+				icon={IconStatus}
+			/>
 
 			<InfoBlock
 				label={'Приоритет'}
 				value={<PriorityBadge priority={task.priority} />}
+				icon={IconPriority}
 			/>
 
 			{isOneDayDeadline ? (
-				<InfoBlock label={'Дедлайн'} value={date(task.startDate)} />
+				<InfoBlock
+					label={'Дедлайн'}
+					value={date(task.startDate)}
+					icon={IconCalendar}
+				/>
 			) : (
 				<>
 					<InfoBlock label={'Дата начала'} value={date(task.startDate)} />
@@ -39,14 +71,21 @@ export function TaskInfo({ task }: Props) {
 
 			<InfoBlock label={'Дата обновления'} value={date(task.updatedDate)} />
 
-			<InfoBlock label={'Просмотрено'} value={task.isView ? 'Да' : 'Нет'} />
+			<InfoBlock
+				label={'Просмотрено'}
+				value={task.isView ? 'Да' : 'Нет'}
+				icon={task.isView ? IconView : IconViewOffSlash}
+			/>
 
 			<div className={'space-y-1'}>
-				<h4 className={'text-muted-foreground'}>Описание</h4>
+				<h4 className={'text-muted-foreground flex items-center gap-x-2'}>
+					<IconDescription className={'size-4'} />
+					Описание
+				</h4>
 
 				<p
 					className={
-						'bg-secondary rounded-lg border border-dashed p-2 whitespace-pre-wrap'
+						'bg-secondary rounded-lg border border-dashed p-2 px-4 whitespace-pre-wrap'
 					}
 					dangerouslySetInnerHTML={{ __html: task.description }}
 				/>
@@ -55,12 +94,30 @@ export function TaskInfo({ task }: Props) {
 	);
 }
 
-function InfoBlock({ label, value }: InfoBlockProps) {
+function InfoBlock({
+	label,
+	value,
+	icon: Icon,
+	titleClassName,
+	valueClassName,
+}: InfoBlockProps) {
 	return (
 		<div className={'grid grid-cols-5 items-center gap-x-4'}>
-			<h4 className={'text-muted-foreground col-span-2'}>{label}</h4>
+			<h4
+				className={cn(
+					'text-muted-foreground col-span-2 flex items-center gap-x-2',
+					titleClassName,
+				)}
+			>
+				{Icon ? (
+					<Icon className={'size-4 text-inherit'} />
+				) : (
+					<i className={'size-4 text-inherit'} />
+				)}
+				{label}
+			</h4>
 
-			<p className={'col-span-3'}>{value}</p>
+			<p className={cn('col-span-3', valueClassName)}>{value}</p>
 		</div>
 	);
 }
