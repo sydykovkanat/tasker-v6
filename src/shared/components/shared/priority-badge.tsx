@@ -4,9 +4,10 @@ import { IPriority } from '@/shared/types';
 
 interface Props {
 	priority: IPriority;
+	full?: boolean;
 }
 
-export function PriorityBadge({ priority }: Props) {
+export function PriorityBadge({ priority, full = true }: Props) {
 	const { label } = formatPriority(priority.id);
 
 	const variant =
@@ -18,9 +19,11 @@ export function PriorityBadge({ priority }: Props) {
 					? 'destructive'
 					: 'default';
 
-	return (
+	return full ? (
 		<Badge variant={variant} className={'border-dashed border-white'}>
 			{label}
 		</Badge>
+	) : (
+		<Badge variant={variant} className={'size-5 border-dashed border-white'} />
 	);
 }

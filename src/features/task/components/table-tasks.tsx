@@ -38,7 +38,7 @@ export function TableTasks({ tasks }: Props) {
 			<Table className={'table-fixed'}>
 				<TableHeader>
 					<TableRow>
-						<TableHead className={'w-[100px]'}>Приоритет</TableHead>
+						<TableHead className={'w-[60px]'}>Приор.</TableHead>
 						<TableHead>Название</TableHead>
 						<TableHead>Автор</TableHead>
 						<TableHead>Исполнитель</TableHead>
@@ -81,7 +81,9 @@ export function TableTasks({ tasks }: Props) {
 									onClick={() => handleCellClick(task.id)}
 								>
 									<TableCell>
-										<PriorityBadge priority={task.priority} />
+										<div className={'flex items-center'}>
+											<PriorityBadge full={false} priority={task.priority} />
+										</div>
 									</TableCell>
 									<TableCell>
 										<p className={'text-wrap'}>{task.taskName}</p>
