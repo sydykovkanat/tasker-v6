@@ -148,7 +148,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 					</ContextMenuSub>
 				)}
 
-				{isAccess && (
+				{!isCompleted && isAccess && (
 					<ContextMenuSub>
 						<ContextMenuSubTrigger
 							disabled={isTagsLoading || isUpdateTagLoading}
@@ -197,7 +197,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 					</ContextMenuSub>
 				)}
 
-				{isAccess && (
+				{!isCompleted && isAccess && (
 					<EditTaskDatesModal taskId={task.id}>
 						<Button
 							variant={'ghost'}
