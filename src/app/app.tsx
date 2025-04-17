@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { useAuthStore } from '@/features/auth/store';
+import { useNotifications } from '@/features/notification/hooks';
 
 import { Layout } from '@/shared/components/shared';
 
@@ -19,6 +20,7 @@ import {
 
 export function App() {
 	const isAuthenticated = useAuthStore((state) => state.isLoggedIn);
+	useNotifications();
 
 	if (!isAuthenticated) {
 		return <Auth />;
