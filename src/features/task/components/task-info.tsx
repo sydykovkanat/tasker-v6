@@ -6,14 +6,16 @@ import {
 	IconCalendar,
 	IconCancel,
 	IconDescription,
+	IconFolder,
 	IconPriority,
 	IconStatus,
 	IconTag,
 	IconView,
 	IconViewOffSlash,
 	PriorityBadge,
+	StatusBadge,
 } from '@/shared/components/shared';
-import { date, formatStatus } from '@/shared/lib';
+import { date } from '@/shared/lib';
 import { IHugeIcon } from '@/shared/types';
 import { cn } from '@/shared/utils';
 
@@ -46,7 +48,7 @@ export function TaskInfo({ task }: Props) {
 
 			<InfoBlock
 				label={'Статус'}
-				value={formatStatus(task.status.id).label}
+				value={<StatusBadge status={task.status} />}
 				icon={IconStatus}
 			/>
 
@@ -55,6 +57,14 @@ export function TaskInfo({ task }: Props) {
 				value={<PriorityBadge priority={task.priority} />}
 				icon={IconPriority}
 			/>
+
+			{task.project && (
+				<InfoBlock
+					label={'Проект'}
+					value={task.project.name}
+					icon={IconFolder}
+				/>
+			)}
 
 			{task.tagDto && (
 				<InfoBlock label={'Тег'} value={task.tagDto.name} icon={IconTag} />

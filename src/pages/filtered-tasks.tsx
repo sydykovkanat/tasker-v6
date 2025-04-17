@@ -4,10 +4,13 @@ import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
 	CreateTaskModal,
+	TableTasks,
+	TableViewModeSwitcher,
 	TaskCard,
 	TasksFilters,
 } from '@/features/task/components';
 import { useGetTasks, useTasksFilters } from '@/features/task/hooks';
+import { useTaskStore } from '@/features/task/store';
 
 import {
 	ErrorBlock,
@@ -23,6 +26,7 @@ interface Props {
 }
 
 export function FilteredTasks({ statusId }: Props) {
+	const viewMode = useTaskStore((state) => state.viewMode);
 	const {
 		projectId,
 		performerId,
@@ -55,12 +59,16 @@ export function FilteredTasks({ statusId }: Props) {
 				description={`Здесь вы можете просмотреть задачи, которые имеют статус "${formattedStatus.label}"`}
 				className={'px-4 py-2'}
 			>
-				<CreateTaskModal>
-					<Button size={'lg'}>
-						<IconNoteAdd />
-						Создать задачу
-					</Button>
-				</CreateTaskModal>
+				<div className={'flex items-center gap-x-4'}>
+					<TableViewModeSwitcher />
+
+					<CreateTaskModal>
+						<Button size={'lg'}>
+							<IconNoteAdd />
+							Создать задачу
+						</Button>
+					</CreateTaskModal>
+				</div>
 			</PageTitles>
 
 			<TasksFilters
@@ -75,7 +83,7 @@ export function FilteredTasks({ statusId }: Props) {
 				onQueryChange={handleQueryChange}
 			/>
 
-			<section className='columns-2 gap-4 p-4'>
+			<section className='p-4'>
 				{tasks.length === 0 ? (
 					<p
 						className={
@@ -84,21 +92,25 @@ export function FilteredTasks({ statusId }: Props) {
 					>
 						Список задач со статусом "{formattedStatus.label}" пуст.
 					</p>
+				) : viewMode === 'kanban' ? (
+					<div className={'columns-2 gap-4'}>
+						{tasks.map((task) => (
+							<div key={task.id} className='mb-4 break-inside-avoid'>
+								<motion.div
+									key={task.id}
+									layout
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0, scale: 0.95 }}
+									transition={{ duration: 0.3 }}
+								>
+									<TaskCard task={task} />
+								</motion.div>
+							</div>
+						))}
+					</div>
 				) : (
-					tasks.map((task) => (
-						<div key={task.id} className='mb-4 break-inside-avoid'>
-							<motion.div
-								key={task.id}
-								layout
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.3 }}
-							>
-								<TaskCard task={task} />
-							</motion.div>
-						</div>
-					))
+					<TableTasks tasks={tasks} />
 				)}
 			</section>
 		</div>

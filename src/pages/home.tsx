@@ -4,11 +4,14 @@ import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
 	CreateTaskModal,
+	TableTasks,
+	TableViewModeSwitcher,
 	TaskCard,
 	TasksColumnTitle,
 	TasksFilters,
 } from '@/features/task/components';
 import { useGetTasks, useTasksFilters } from '@/features/task/hooks';
+import { useTaskStore } from '@/features/task/store';
 
 import {
 	ErrorBlock,
@@ -20,6 +23,7 @@ import { Button } from '@/shared/components/ui';
 import { formatStatus, safeParse } from '@/shared/lib';
 
 export function Home() {
+	const viewMode = useTaskStore((state) => state.viewMode);
 	const {
 		handleProjectChange,
 		handleStatusChange,
@@ -82,12 +86,16 @@ export function Home() {
 				}
 				className={'px-4 py-2'}
 			>
-				<CreateTaskModal>
-					<Button size={'lg'}>
-						<IconNoteAdd />
-						Создать задачу
-					</Button>
-				</CreateTaskModal>
+				<div className={'flex items-center gap-x-4'}>
+					<TableViewModeSwitcher />
+
+					<CreateTaskModal>
+						<Button size={'lg'}>
+							<IconNoteAdd />
+							Создать задачу
+						</Button>
+					</CreateTaskModal>
+				</div>
 			</PageTitles>
 
 			<TasksFilters
@@ -103,81 +111,87 @@ export function Home() {
 				onQueryChange={handleQueryChange}
 			/>
 
-			{statusId !== 'all' ? (
-				<div className={'p-4'}>
-					<h5 className={'mb-4 flex items-center gap-x-2 text-lg'}>
-						<span>Задачи со статусом "{formattedStatus.label}"</span>
+			{viewMode === 'kanban' ? (
+				statusId !== 'all' ? (
+					<div className={'p-4'}>
+						<h5 className={'mb-4 flex items-center gap-x-2 text-lg'}>
+							<span>Задачи со статусом "{formattedStatus.label}"</span>
 
-						<span className={'text-muted-foreground'}>
-							({sortedTasks.length})
-						</span>
-					</h5>
+							<span className={'text-muted-foreground'}>
+								({sortedTasks.length})
+							</span>
+						</h5>
 
-					<AnimatePresence mode={'popLayout'}>
-						<div className='columns-2 gap-4'>
-							{sortedTasks.length === 0 ? (
-								<p
-									className={
-										'text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-									}
-								>
-									Список задач со статусом "{formattedStatus.label}" пуст.
-								</p>
-							) : (
-								sortedTasks.map((task) => (
-									<div key={task.id} className='mb-4 break-inside-avoid'>
-										<motion.div
-											key={task.id}
-											layout
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-											exit={{ opacity: 0, scale: 0.95 }}
-											transition={{ duration: 0.3 }}
-										>
-											<TaskCard task={task} />
-										</motion.div>
-									</div>
-								))
-							)}
-						</div>
-					</AnimatePresence>
-				</div>
-			) : (
-				<div className={'grid grid-cols-3 gap-4 p-4'}>
-					{[newTasks, inProgressTasks, completedTasks].map(
-						(taskList, index) => (
-							<div>
-								<TasksColumnTitle
-									status={formatStatus(index + 1).label}
-									count={taskList.length}
-								/>
-
-								<AnimatePresence mode={'popLayout'}>
-									<div className={'flex flex-col gap-y-4'} key={index}>
-										{taskList.length === 0 ? (
-											<p className={'text-muted-foreground mt-4 text-center'}>
-												Список задач со статусом "
-												{formatStatus(index + 1).label}" пуст.
-											</p>
-										) : (
-											taskList.map((task) => (
-												<motion.div
-													key={task.id}
-													layout
-													initial={{ opacity: 0 }}
-													animate={{ opacity: 1 }}
-													exit={{ opacity: 0, scale: 0.95 }}
-													transition={{ duration: 0.3 }}
-												>
-													<TaskCard task={task} />
-												</motion.div>
-											))
-										)}
-									</div>
-								</AnimatePresence>
+						<AnimatePresence mode={'popLayout'}>
+							<div className='columns-2 gap-4'>
+								{sortedTasks.length === 0 ? (
+									<p
+										className={
+											'text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+										}
+									>
+										Список задач со статусом "{formattedStatus.label}" пуст.
+									</p>
+								) : (
+									sortedTasks.map((task) => (
+										<div key={task.id} className='mb-4 break-inside-avoid'>
+											<motion.div
+												key={task.id}
+												layout
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
+												exit={{ opacity: 0, scale: 0.95 }}
+												transition={{ duration: 0.3 }}
+											>
+												<TaskCard task={task} />
+											</motion.div>
+										</div>
+									))
+								)}
 							</div>
-						),
-					)}
+						</AnimatePresence>
+					</div>
+				) : (
+					<div className={'grid grid-cols-3 gap-4 p-4'}>
+						{[newTasks, inProgressTasks, completedTasks].map(
+							(taskList, index) => (
+								<div>
+									<TasksColumnTitle
+										status={formatStatus(index + 1).label}
+										count={taskList.length}
+									/>
+
+									<AnimatePresence mode={'popLayout'}>
+										<div className={'flex flex-col gap-y-4'} key={index}>
+											{taskList.length === 0 ? (
+												<p className={'text-muted-foreground mt-4 text-center'}>
+													Список задач со статусом "
+													{formatStatus(index + 1).label}" пуст.
+												</p>
+											) : (
+												taskList.map((task) => (
+													<motion.div
+														key={task.id}
+														layout
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+														exit={{ opacity: 0, scale: 0.95 }}
+														transition={{ duration: 0.3 }}
+													>
+														<TaskCard task={task} />
+													</motion.div>
+												))
+											)}
+										</div>
+									</AnimatePresence>
+								</div>
+							),
+						)}
+					</div>
+				)
+			) : (
+				<div className={'p-4 pt-2 pb-0'}>
+					<TableTasks tasks={tasks} />
 				</div>
 			)}
 		</div>

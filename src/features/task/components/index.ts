@@ -1,5 +1,7 @@
 export * from './task-card';
 export * from './edit-task-modal';
+export * from './table-view-mode-switcher';
+export * from './table-tasks';
 export * from './create-subtask-modal';
 export * from './create-task-modal';
 export * from './task-form';
