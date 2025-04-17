@@ -42,7 +42,11 @@ export function CreateSubtaskModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<TaskForm onSubmit={handleCreate} isLoading={isCreateSubtaskLoading} />
+				<TaskForm
+					type={'create'}
+					onSubmit={handleCreate}
+					isLoading={isCreateSubtaskLoading}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
