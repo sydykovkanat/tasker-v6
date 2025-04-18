@@ -1,4 +1,5 @@
 export * from './button';
+export * from './tooltip';
 export * from './count-up';
 export * from './select';
 export * from './calendar';
