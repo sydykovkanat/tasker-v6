@@ -10,17 +10,25 @@ export function Sidebar() {
 			}
 		>
 			<section>
-				<Link to={'/'} className={'mb-4 flex items-center gap-x-2'}>
-					{/*<IconLogo className={'size-9'} />*/}
-					<img src={'/logo.jpg'} className={'size-9 rounded-sm'} alt={'logo'} />
+				<div className={'flex items-center justify-between gap-x-4'}>
+					<Link to={'/'} className={'mb-4 flex items-center gap-x-2'}>
+						{/*<IconLogo className={'size-9'} />*/}
+						<img
+							src={'/logo.jpg'}
+							className={'size-9 rounded-sm'}
+							alt={'logo'}
+						/>
 
-					<div className={'leading-none'}>
-						<h3 className={'font-medium'}>Таскер</h3>
-						<p className={'text-muted-foreground text-xs'}>
-							Управление задачами и проектами
-						</p>
-					</div>
-				</Link>
+						<div className={'leading-none'}>
+							<h3 className={'font-medium'}>Таскер</h3>
+							<p className={'text-muted-foreground text-xs'}>
+								Управление задачами и проектами
+							</p>
+						</div>
+					</Link>
+
+					{/*<ThemeSwitcher />*/}
+				</div>
 
 				<SidebarNav />
 			</section>

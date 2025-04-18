@@ -3,16 +3,23 @@ import { toast } from 'sonner';
 
 import { taskService } from '@/features/task/services';
 
-export function useEditTaskStatus(taskId: number) {
+export function useEditTaskStatus() {
 	const queryClient = useQueryClient();
 
 	const { mutate: editTaskStatus, isPending: isEditTaskStatusLoading } =
 		useMutation({
 			mutationKey: ['tasks edit status'],
-			mutationFn: async (statusId: number) =>
-				await taskService.updateStatus(taskId, statusId),
+			mutationFn: async ({
+				taskId,
+				statusId,
+			}: {
+				taskId: number;
+				statusId: number;
+			}) => await taskService.updateStatus(taskId, statusId),
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({ queryKey: ['tasks'] });
+				await queryClient.invalidateQueries({ queryKey: ['task'] });
+				await queryClient.invalidateQueries({ queryKey: ['subtasks'] });
 
 				toast.success('Статус успешно обновлен', {
 					description: 'Статус задачи был успешно обновлен',

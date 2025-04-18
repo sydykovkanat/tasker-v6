@@ -19,7 +19,7 @@ export function StatusBadge({ status }: Props) {
 					: 'destructive';
 
 	return (
-		<Badge variant={variant} className={'border-dashed border-white'}>
+		<Badge variant={variant} className={'border-background border-dashed'}>
 			{label}
 		</Badge>
 	);

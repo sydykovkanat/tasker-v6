@@ -1,5 +1,6 @@
 import notificationSound from '/notification.mp3';
 import { Client } from '@stomp/stompjs';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -11,6 +12,7 @@ import { WS_URL } from '@/shared/constants';
 export function useNotifications() {
 	const user = useAuthStore((state) => state.user);
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		if (!user?.token) return;
@@ -37,6 +39,10 @@ export function useNotifications() {
 											: 'Добавлено';
 
 							void audio.play();
+
+							queryClient.invalidateQueries({ queryKey: ['tasks'] });
+							queryClient.invalidateQueries({ queryKey: ['task'] });
+							queryClient.invalidateQueries({ queryKey: ['subtasks'] });
 
 							toast.message(type, {
 								description: parsedMessage.messageNotification,

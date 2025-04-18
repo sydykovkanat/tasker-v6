@@ -163,17 +163,21 @@ function Footer({
 			</Badge>
 		</div>
 	) : status === 2 ? (
-		<div className={'h-4 w-full rounded-full border bg-gray-200 shadow-inner'}>
+		<div
+			className={
+				'dark:bg-background bg-secondary h-4 w-full rounded-full border shadow-inner'
+			}
+		>
 			<div
 				className={cn(
-					'bg-primary relative top-1/2 left-0 h-4 -translate-y-2/4 rounded-full border p-1 shadow-md',
+					'dark:bg-accent bg-primary relative top-1/2 left-0 h-4 -translate-y-2/4 rounded-full border p-1 shadow-md',
 					{
 						'bg-destructive': remainingDays < 0,
 					},
 				)}
 				style={{ width: barWidth }}
 			>
-				<span className='text-muted absolute top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 text-xs text-nowrap'>
+				<span className='dark:text-foreground text-muted absolute top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 text-xs text-nowrap'>
 					{remainingDays < 0
 						? `Просрочка на ${Math.abs(remainingDays)} ${getDayDeclension(remainingDays)}`
 						: `${remainingDays} ${getDayDeclension(remainingDays)} ост.`}

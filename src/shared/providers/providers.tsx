@@ -1,20 +1,22 @@
 import { type PropsWithChildren } from 'react';
 
 import { Toaster } from '@/shared/components/ui';
-import { TanstackQueryProvider } from '@/shared/providers';
+import { TanstackQueryProvider, ThemeProvider } from '@/shared/providers';
 
 export function Providers({ children }: PropsWithChildren) {
 	return (
 		<TanstackQueryProvider>
-			{children}
+			<ThemeProvider defaultTheme='light' storageKey='tasker-ui-theme'>
+				{children}
 
-			<Toaster
-				toastOptions={{
-					style: {
-						borderRadius: 'var(--radius)',
-					},
-				}}
-			/>
+				<Toaster
+					toastOptions={{
+						style: {
+							borderRadius: 'var(--radius)',
+						},
+					}}
+				/>
+			</ThemeProvider>
 		</TanstackQueryProvider>
 	);
 }

@@ -20,10 +20,13 @@ export function PriorityBadge({ priority, full = true }: Props) {
 					: 'default';
 
 	return full ? (
-		<Badge variant={variant} className={'border-dashed border-white'}>
+		<Badge variant={variant} className={'border-background border-dashed'}>
 			{label}
 		</Badge>
 	) : (
-		<Badge variant={variant} className={'size-5 border-dashed border-white'} />
+		<Badge
+			variant={variant}
+			className={'border-background size-5 border-dashed'}
+		/>
 	);
 }

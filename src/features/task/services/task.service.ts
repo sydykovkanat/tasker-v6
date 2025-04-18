@@ -164,6 +164,18 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async editProject(taskId: number, projectId: number | null) {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/${taskId}/projects`,
+				data: {
+					projectId,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();

@@ -36,9 +36,11 @@ export function OneTask() {
 	}
 
 	const isAccess =
-		user?.roles.includes('ADMIN') ||
-		task.performer.id === user?.id ||
-		task.author.id === user?.id;
+		(user?.roles.includes('ADMIN') ||
+			task.performer.id === user?.id ||
+			task.author.id === user?.id) &&
+		task.status.id !== 3 &&
+		task.status.id !== 4;
 
 	return (
 		<main>

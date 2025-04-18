@@ -43,6 +43,7 @@ export function FilteredTasks({ statusId }: Props) {
 		safeParse(statusId),
 		safeParse(projectId),
 		safeParse(performerId),
+		safeParse(departmentId),
 	);
 	const { projects } = useGetProjects();
 	const { subordinates, isSubordinatesLoading } = useGetSubordinates(0, 1000);

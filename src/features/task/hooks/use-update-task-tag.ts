@@ -17,6 +17,7 @@ export function useUpdateTaskTag() {
 		}) => taskService.updateTag(taskId, tagId),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['tasks'] });
+			await queryClient.invalidateQueries({ queryKey: ['task'] });
 
 			toast.success('Тег успешно добавлен к задаче', {
 				description: 'Тег был успешно добавлен к задаче',

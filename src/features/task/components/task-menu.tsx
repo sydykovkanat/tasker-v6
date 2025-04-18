@@ -1,11 +1,13 @@
 import { PropsWithChildren } from 'react';
 
 import { useAuthStore } from '@/features/auth/store';
+import { useGetProjects } from '@/features/project/hooks';
 import { useGetTags } from '@/features/tag/hooks';
 import { DeleteTaskModal } from '@/features/task/components';
 import { EditTaskDatesModal } from '@/features/task/components/edit-task-dates-modal';
 import {
 	useEditTaskPriority,
+	useEditTaskProject,
 	useEditTaskStatus,
 	useUpdateTaskTag,
 } from '@/features/task/hooks';
@@ -28,6 +30,7 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuSeparator,
 	ContextMenuSub,
 	ContextMenuSubContent,
 	ContextMenuSubTrigger,
@@ -39,14 +42,12 @@ interface Props {
 }
 
 export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
-	const { editTaskStatus, isEditTaskStatusLoading } = useEditTaskStatus(
-		task.id,
-	);
-	const { editTaskPriority, isEditTaskPriorityLoading } = useEditTaskPriority(
-		task.id,
-	);
+	const { editTaskStatus, isEditTaskStatusLoading } = useEditTaskStatus();
+	const { editTaskPriority, isEditTaskPriorityLoading } = useEditTaskPriority();
 	const { tags, isTagsLoading } = useGetTags();
 	const { updateTag, isUpdateTagLoading } = useUpdateTaskTag();
+	const { projects, isProjectsLoading } = useGetProjects();
+	const { editProject, isEditTaskProjectLoading } = useEditTaskProject();
 
 	const user = useAuthStore((state) => state.user);
 	const isAccess =
@@ -77,7 +78,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 						{!isNew && !isCompleted && (
 							<ContextMenuItem
 								disabled={isEditTaskStatusLoading}
-								onClick={() => editTaskStatus(1)}
+								onClick={() => editTaskStatus({ taskId: task.id, statusId: 1 })}
 							>
 								<IconCircleArrowUp />
 								Перевести в новое
@@ -87,7 +88,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 						{!isProgress && (
 							<ContextMenuItem
 								disabled={isEditTaskStatusLoading}
-								onClick={() => editTaskStatus(2)}
+								onClick={() => editTaskStatus({ taskId: task.id, statusId: 2 })}
 							>
 								<IconCircleArrowRight />
 								Перевести в работу
@@ -97,7 +98,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 						{!isCompleted && (
 							<ContextMenuItem
 								disabled={isEditTaskStatusLoading}
-								onClick={() => editTaskStatus(3)}
+								onClick={() => editTaskStatus({ taskId: task.id, statusId: 3 })}
 							>
 								<IconCircleArrowDown />
 								Завершить задачу
@@ -118,7 +119,9 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 							{!isLow && (
 								<ContextMenuItem
 									disabled={isEditTaskPriorityLoading}
-									onClick={() => editTaskPriority(1)}
+									onClick={() =>
+										editTaskPriority({ taskId: task.id, priorityId: 1 })
+									}
 								>
 									<IconCircle className={'text-green-500'} />
 									Низкий
@@ -128,7 +131,9 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 							{!isMiddle && (
 								<ContextMenuItem
 									disabled={isEditTaskPriorityLoading}
-									onClick={() => editTaskPriority(2)}
+									onClick={() =>
+										editTaskPriority({ taskId: task.id, priorityId: 2 })
+									}
 								>
 									<IconCircle className={'text-yellow-500'} />
 									Средний
@@ -138,7 +143,9 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 							{!isHigh && (
 								<ContextMenuItem
 									disabled={isEditTaskPriorityLoading}
-									onClick={() => editTaskPriority(3)}
+									onClick={() =>
+										editTaskPriority({ taskId: task.id, priorityId: 3 })
+									}
 								>
 									<IconCircle className={'text-red-500'} />
 									Высокий
@@ -169,6 +176,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 										{tags?.map((tag) => (
 											<ContextMenuItem
 												key={tag.id}
+												disabled={tag.id === task.tagDto?.id}
 												onClick={() => {
 													updateTag({
 														taskId: task.id,
@@ -176,11 +184,17 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 													});
 												}}
 											>
+												{tag.id === task.tagDto?.id && (
+													<IconCircle className={'fill-foreground size-2'} />
+												)}
 												{tag.name}
 											</ContextMenuItem>
 										))}
 
+										<ContextMenuSeparator />
+
 										<ContextMenuItem
+											disabled={!task.tagDto?.id}
 											onClick={() => {
 												updateTag({
 													taskId: task.id,
@@ -190,6 +204,62 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 										>
 											<IconCancel />
 											Отвязать тег
+										</ContextMenuItem>
+									</>
+								))}
+						</ContextMenuSubContent>
+					</ContextMenuSub>
+				)}
+
+				{!isCompleted && isAccess && (
+					<ContextMenuSub>
+						<ContextMenuSubTrigger
+							disabled={isProjectsLoading || isEditTaskProjectLoading}
+							className={'flex items-center gap-x-2'}
+						>
+							<IconTag className={'text-muted-foreground'} />
+							Проект задачи
+						</ContextMenuSubTrigger>
+
+						<ContextMenuSubContent>
+							{projects &&
+								(projects.length === 0 ? (
+									<ContextMenuItem disabled className={'text-muted-foreground'}>
+										Нет проектов
+									</ContextMenuItem>
+								) : (
+									<>
+										{projects.map((project) => (
+											<ContextMenuItem
+												key={project.id}
+												disabled={project.id === task.project?.id}
+												onClick={() => {
+													editProject({
+														taskId: task.id,
+														projectId: project.id,
+													});
+												}}
+											>
+												{project.id === task.project?.id && (
+													<IconCircle className={'fill-foreground size-2'} />
+												)}
+												{project.name}
+											</ContextMenuItem>
+										))}
+
+										<ContextMenuSeparator />
+
+										<ContextMenuItem
+											disabled={!task.project?.id}
+											onClick={() => {
+												editProject({
+													taskId: task.id,
+													projectId: null,
+												});
+											}}
+										>
+											<IconCancel />
+											Отвязать проект
 										</ContextMenuItem>
 									</>
 								))}
