@@ -1,6 +1,7 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { useAuthStore } from '@/features/auth/store';
+import { IDepartment } from '@/features/department/types';
 import { IProject } from '@/features/project/types';
 import { ISubordinate } from '@/features/subordinate/types';
 
@@ -37,6 +38,9 @@ interface Props {
 	isStatusDisabled?: boolean;
 	query: string;
 	onQueryChange: (query: string) => void;
+	departmentId?: string;
+	onDepartmentChange?: (departmentId: string) => void;
+	departments?: IDepartment[];
 }
 
 export function TasksFilters({
@@ -48,6 +52,9 @@ export function TasksFilters({
 	performerId,
 	statusId,
 	onStatusChange,
+	departmentId,
+	departments,
+	onDepartmentChange,
 	isStatusDisabled,
 	query,
 	onQueryChange,
@@ -60,6 +67,12 @@ export function TasksFilters({
 			: subordinates.find(
 					(subordinate) => subordinate.id.toString() === performerId,
 				)?.name;
+	const selectedDepartmentName =
+		departmentId === 'all'
+			? 'Все департаменты'
+			: departments?.find(
+					(department) => department.id.toString() === departmentId,
+				)?.departmentName;
 
 	return (
 		<div className={'grid grid-cols-5 gap-x-4 px-4 pt-4'}>
@@ -98,7 +111,7 @@ export function TasksFilters({
 							variant='outline'
 							role='combobox'
 							size={'lg'}
-							className='justify-between font-normal'
+							className='justify-between overflow-hidden font-normal'
 						>
 							{selectedPerformerName || 'Выберите исполнителя'}
 							<ChevronsUpDown className='opacity-35' />
@@ -145,6 +158,79 @@ export function TasksFilters({
 												className={cn(
 													'ml-auto',
 													performerId === subordinate.id.toString()
+														? 'opacity-100'
+														: 'opacity-0',
+												)}
+											/>
+										</CommandItem>
+									))}
+								</CommandGroup>
+							</CommandList>
+						</Command>
+					</PopoverContent>
+				</Popover>
+			)}
+
+			{isAdmin && (
+				<Popover>
+					<PopoverTrigger asChild>
+						<Button
+							variant='outline'
+							role='combobox'
+							size={'lg'}
+							className='justify-between overflow-hidden font-normal'
+						>
+							{selectedDepartmentName || 'Выберите департамент'}
+							<ChevronsUpDown className='opacity-35' />
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className='w-[400px] p-0'>
+						<Command>
+							<CommandInput
+								placeholder='Поиск по названию...'
+								className='h-9'
+							/>
+							<CommandList>
+								<CommandEmpty>Департаменты не найдены.</CommandEmpty>
+								<CommandGroup>
+									<CommandItem
+										value={'all'}
+										onSelect={(currentValue) => {
+											if (onDepartmentChange) {
+												onDepartmentChange(currentValue);
+											}
+										}}
+										className={'justify-start text-start'}
+									>
+										Все департаменты
+										<Check
+											className={cn(
+												'ml-auto',
+												departmentId === 'all' ? 'opacity-100' : 'opacity-0',
+											)}
+										/>
+									</CommandItem>
+
+									{departments?.map((department) => (
+										<CommandItem
+											className={'truncate text-nowrap'}
+											key={department.id}
+											value={department.departmentName}
+											onSelect={(currentValue) => {
+												const selectedDepartmentId = departments?.find(
+													(department) =>
+														department.departmentName === currentValue,
+												)?.id;
+												if (selectedDepartmentId && onDepartmentChange) {
+													onDepartmentChange(selectedDepartmentId.toString());
+												}
+											}}
+										>
+											{department.departmentName}
+											<Check
+												className={cn(
+													'ml-auto',
+													performerId === department.id.toString()
 														? 'opacity-100'
 														: 'opacity-0',
 												)}

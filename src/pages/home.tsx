@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { useGetDepartments } from '@/features/department/hooks';
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
@@ -29,9 +30,11 @@ export function Home() {
 		handleStatusChange,
 		handleSubordinateChange,
 		handleQueryChange,
+		handleDepartmentChange,
 		performerId,
 		projectId,
 		statusId,
+		departmentId,
 		query,
 	} = useTasksFilters();
 
@@ -39,11 +42,18 @@ export function Home() {
 		safeParse(statusId),
 		safeParse(projectId),
 		safeParse(performerId),
+		safeParse(departmentId),
 	);
 	const { projects, isProjectsLoading } = useGetProjects();
 	const { subordinates, isSubordinatesLoading } = useGetSubordinates(0, 1000);
+	const { departments, isDepartmentsLoading } = useGetDepartments();
 
-	if (isTasksLoading || isProjectsLoading || isSubordinatesLoading) {
+	if (
+		isTasksLoading ||
+		isProjectsLoading ||
+		isSubordinatesLoading ||
+		isDepartmentsLoading
+	) {
 		return <Loading />;
 	}
 
@@ -104,6 +114,9 @@ export function Home() {
 				onProjectChange={handleProjectChange}
 				subordinates={subordinates.content}
 				onSubordinateChange={handleSubordinateChange}
+				departments={departments}
+				onDepartmentChange={handleDepartmentChange}
+				departmentId={departmentId}
 				performerId={performerId}
 				statusId={statusId}
 				onStatusChange={handleStatusChange}

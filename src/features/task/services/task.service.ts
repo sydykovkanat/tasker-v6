@@ -37,6 +37,7 @@ class TaskService {
 		statusId?: number,
 		projectId?: number,
 		performerId?: number,
+		departmentId?: number,
 	): Promise<ITask[]> {
 		return (
 			await instance<ITask[]>({
@@ -46,6 +47,7 @@ class TaskService {
 					statusId,
 					projectId,
 					performerId,
+					departmentId,
 				},
 			})
 		).data;

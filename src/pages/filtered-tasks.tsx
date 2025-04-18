@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 
+import { useGetDepartments } from '@/features/department/hooks';
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
 import {
@@ -31,9 +32,11 @@ export function FilteredTasks({ statusId }: Props) {
 		projectId,
 		performerId,
 		query,
+		departmentId,
 		handleSubordinateChange,
 		handleProjectChange,
 		handleQueryChange,
+		handleDepartmentChange,
 	} = useTasksFilters();
 	const formattedStatus = formatStatus(statusId);
 	const { tasks, isTasksLoading } = useGetTasks(
@@ -42,9 +45,10 @@ export function FilteredTasks({ statusId }: Props) {
 		safeParse(performerId),
 	);
 	const { projects } = useGetProjects();
-	const { subordinates } = useGetSubordinates(0, 1000);
+	const { subordinates, isSubordinatesLoading } = useGetSubordinates(0, 1000);
+	const { isDepartmentsLoading, departments } = useGetDepartments();
 
-	if (isTasksLoading) {
+	if (isTasksLoading || isSubordinatesLoading || isDepartmentsLoading) {
 		return <Loading />;
 	}
 
@@ -80,6 +84,9 @@ export function FilteredTasks({ statusId }: Props) {
 				performerId={performerId}
 				isStatusDisabled={true}
 				query={query}
+				departmentId={departmentId}
+				onDepartmentChange={handleDepartmentChange}
+				departments={departments}
 				onQueryChange={handleQueryChange}
 			/>
 

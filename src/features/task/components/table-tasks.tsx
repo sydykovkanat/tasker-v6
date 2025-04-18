@@ -66,7 +66,7 @@ export function TableTasks({ tasks }: Props) {
 						};
 
 						return (
-							<TaskMenu task={task}>
+							<TaskMenu task={task} key={task.id}>
 								<motion.tr
 									key={task.id}
 									layout

@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 
 import { SidebarNav, SidebarUser } from '@/widgets/sidebar/components';
 
-import { IconLogo } from '@/shared/components/shared';
-
 export function Sidebar() {
 	return (
 		<aside
@@ -13,7 +11,8 @@ export function Sidebar() {
 		>
 			<section>
 				<Link to={'/'} className={'mb-4 flex items-center gap-x-2'}>
-					<IconLogo className={'size-9'} />
+					{/*<IconLogo className={'size-9'} />*/}
+					<img src={'/logo.jpg'} className={'size-9 rounded-sm'} alt={'logo'} />
 
 					<div className={'leading-none'}>
 						<h3 className={'font-medium'}>Таскер</h3>
