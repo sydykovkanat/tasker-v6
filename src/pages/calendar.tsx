@@ -8,6 +8,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAuthStore } from '@/features/auth/store';
 import { useGetDepartments } from '@/features/department/hooks';
 import { IDepartment } from '@/features/department/types';
 import { useGetTasks } from '@/features/task/hooks';
@@ -60,6 +61,7 @@ const ALL_DEPARTMENTS: IDepartment = {
 };
 
 export function Calendar() {
+	const user = useAuthStore((state) => state.user);
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [selectedDepartment, setSelectedDepartment] = useState<
 		IDepartment | undefined
@@ -72,6 +74,7 @@ export function Calendar() {
 		selectedDepartment?.id,
 	);
 	const { departments, isDepartmentsLoading } = useGetDepartments();
+	const isAccess = user?.roles.includes('ADMIN');
 
 	// Вычисляемые значения для текущего месяца
 	const { currentYear, currentMonth, daysInMonth, firstDay, lastDay } =
@@ -400,6 +403,7 @@ export function Calendar() {
 			<>
 				<Button
 					size={'lg'}
+					className={'font-normal'}
 					variant='outline'
 					onClick={goToCurrentMonth}
 					disabled={isCurrentMonth}
@@ -485,7 +489,7 @@ export function Calendar() {
 				className={'px-4 py-2'}
 			>
 				<div className='flex items-center gap-x-4'>
-					<DepartmentSelector />
+					{isAccess && <DepartmentSelector />}
 					<MonthNavigation />
 				</div>
 			</PageTitles>

@@ -82,12 +82,14 @@ export function OneTask() {
 						description={'Список подзадач'}
 						className={'px-4 py-2'}
 					>
-						<CreateSubtaskModal taskId={parseInt(id)}>
-							<Button size={'lg'}>
-								<IconNoteAdd />
-								Создать подзадачу
-							</Button>
-						</CreateSubtaskModal>
+						{isAccess && (
+							<CreateSubtaskModal taskId={parseInt(id)}>
+								<Button size={'lg'}>
+									<IconNoteAdd />
+									Создать подзадачу
+								</Button>
+							</CreateSubtaskModal>
+						)}
 					</PageTitles>
 
 					<div className={'relative flex min-h-[80%] flex-col gap-y-4 p-4'}>
