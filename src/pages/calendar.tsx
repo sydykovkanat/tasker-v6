@@ -278,18 +278,21 @@ export function Calendar() {
 		const labels = [];
 
 		for (let i = 1; i <= daysInMonth; i += 1) {
-			if (i % 5 === 1 || i === 1 || i === daysInMonth) {
-				const position = ((i - 1) / daysInMonth) * 100;
-				labels.push(
-					<div
-						key={`day-label-${i}`}
-						className='absolute text-xs text-gray-500'
-						style={{ left: `${position}%` }}
-					>
-						{i}
-					</div>,
-				);
-			}
+			const position = ((i - 1) / daysInMonth) * 100;
+			labels.push(
+				<div
+					key={`day-label-${i}`}
+					className={cn(
+						'absolute -translate-x-1/2 transform text-xs text-gray-500',
+						{
+							'font-semibold text-indigo-500': i === new Date().getDate(),
+						},
+					)}
+					style={{ left: `${position}%` }}
+				>
+					{i}
+				</div>,
+			);
 		}
 
 		return <>{labels}</>;
@@ -306,10 +309,52 @@ export function Calendar() {
 
 			return (
 				<div
-					className='absolute z-10 h-full w-px bg-blue-400'
+					className='absolute z-10 h-full'
 					style={{ left: `${position}%` }}
-					title='Сегодня'
-				/>
+					title={'Сегодня'}
+				>
+					{/* Верхняя иконка */}
+					<div className='absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform'>
+						<svg
+							width='20'
+							height='20'
+							viewBox='0 0 24 24'
+							fill='none'
+							xmlns='http://www.w3.org/2000/svg'
+						>
+							<circle cx='12' cy='12' r='10' fill='#7c86ff' />
+							<path
+								d='M12 7V12L15 15'
+								stroke='white'
+								strokeWidth='1.5'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+							/>
+						</svg>
+					</div>
+
+					{/* Основной маркер на всю высоту */}
+					<div
+						className='absolute left-1/2 h-full w-[1.5px] -translate-x-1/2 transform rounded-full bg-indigo-400'
+						title='Сегодня'
+					/>
+
+					{/* Нижняя иконка */}
+					<div className='absolute bottom-0 left-1/2 z-20 -translate-x-1/2 translate-y-1/2 transform'>
+						<svg
+							width='20'
+							height='20'
+							viewBox='0 0 24 24'
+							fill='none'
+							xmlns='http://www.w3.org/2000/svg'
+						>
+							<path
+								d='M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z'
+								fill='#7c86ff'
+							/>
+						</svg>
+					</div>
+				</div>
 			);
 		}
 
