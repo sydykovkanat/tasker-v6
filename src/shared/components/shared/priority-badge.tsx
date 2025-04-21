@@ -1,6 +1,7 @@
 import { Badge } from '@/shared/components/ui';
 import { formatPriority } from '@/shared/lib';
 import { IPriority } from '@/shared/types';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	priority: IPriority;
@@ -24,9 +25,18 @@ export function PriorityBadge({ priority, full = true }: Props) {
 			{label}
 		</Badge>
 	) : (
-		<Badge
-			variant={variant}
-			className={'border-background size-5 border-dashed'}
-		/>
+		<div
+			className={cn(
+				'flex size-3 items-center justify-center rounded-full border',
+				{
+					'border-green-500': priority.id === 1,
+					'border-yellow-500': priority.id === 2,
+					'border-destructive': priority.id === 3,
+					'border-muted': priority.id === 4,
+				},
+			)}
+		>
+			<Badge variant={variant} className={'border-background size-2.5 p-0'} />
+		</div>
 	);
 }

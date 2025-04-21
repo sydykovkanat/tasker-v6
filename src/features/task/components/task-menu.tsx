@@ -11,8 +11,10 @@ import {
 import { EditTaskDatesModal } from '@/features/task/components/edit-task-dates-modal';
 import {
 	useEditTaskPriority,
+	useEditTaskPriorityOrders,
 	useEditTaskProject,
 	useEditTaskStatus,
+	useGetTasks,
 	useUpdateTaskTag,
 } from '@/features/task/hooks';
 import { ITask } from '@/features/task/types';
@@ -55,6 +57,9 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 	const { updateTag, isUpdateTagLoading } = useUpdateTaskTag();
 	const { projects, isProjectsLoading } = useGetProjects();
 	const { editProject, isEditTaskProjectLoading } = useEditTaskProject();
+	const { editTaskPriorityOrder, isEditTaskPriorityOrderLoading } =
+		useEditTaskPriorityOrders();
+	const { tasks } = useGetTasks();
 
 	const user = useAuthStore((state) => state.user);
 	const isAccess =
@@ -67,6 +72,51 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 	const isLow = task.priority.id === 1;
 	const isMiddle = task.priority.id === 2;
 	const isHigh = task.priority.id === 3;
+
+	const findAdjacentTasksByPerformer = () => {
+		if (!tasks) return { prevTask: null, nextTask: null };
+
+		const samePriorityTasks = tasks
+			.filter(
+				(t) =>
+					t.performer.id === task.performer.id &&
+					t.status.id === task.status.id &&
+					t.priorityOrder,
+			)
+			.sort((a, b) => (a.priorityOrder || 0) - (b.priorityOrder || 0));
+
+		const currentIndex = samePriorityTasks.findIndex((t) => t.id === task.id);
+		if (currentIndex === -1) return { prevTask: null, nextTask: null };
+
+		const prevTask =
+			currentIndex > 0 ? samePriorityTasks[currentIndex - 1] : null;
+		const nextTask =
+			currentIndex < samePriorityTasks.length - 1
+				? samePriorityTasks[currentIndex + 1]
+				: null;
+
+		return { prevTask, nextTask };
+	};
+
+	const { prevTask, nextTask } = findAdjacentTasksByPerformer();
+
+	const handleRaisePriority = () => {
+		if (!prevTask) return;
+
+		editTaskPriorityOrder({
+			firstTaskId: task.id,
+			secondTaskId: prevTask.id,
+		});
+	};
+
+	const handleLowerPriority = () => {
+		if (!nextTask) return;
+
+		editTaskPriorityOrder({
+			firstTaskId: task.id,
+			secondTaskId: nextTask.id,
+		});
+	};
 
 	return (
 		<ContextMenu modal={false}>
@@ -160,6 +210,26 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 							)}
 						</ContextMenuSubContent>
 					</ContextMenuSub>
+				)}
+
+				{!isCompleted && isAccess && (
+					<>
+						<ContextMenuItem
+							onClick={handleRaisePriority}
+							disabled={!prevTask || isEditTaskPriorityOrderLoading}
+						>
+							<IconCircleArrowDown className={'text-muted-foreground'} />
+							Понизить приоритет
+						</ContextMenuItem>
+
+						<ContextMenuItem
+							onClick={handleLowerPriority}
+							disabled={!nextTask || isEditTaskPriorityOrderLoading}
+						>
+							<IconCircleArrowUp className={'text-muted-foreground'} />
+							Поднять приоритет
+						</ContextMenuItem>
+					</>
 				)}
 
 				{!isCompleted && isAccess && (

@@ -65,7 +65,7 @@ export function Calendar() {
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [selectedDepartment, setSelectedDepartment] = useState<
 		IDepartment | undefined
-	>(undefined);
+	>(ALL_DEPARTMENTS);
 
 	const { tasks, isTasksLoading } = useGetTasks(
 		undefined,

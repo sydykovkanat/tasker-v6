@@ -193,6 +193,22 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async editPriorityOrders(
+		firstTaskId: number,
+		secondTaskId: number,
+	): Promise<void> {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/priorityOrders`,
+				data: {
+					firstTaskId,
+					secondTaskId,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();
