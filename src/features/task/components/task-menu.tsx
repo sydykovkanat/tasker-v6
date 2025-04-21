@@ -3,7 +3,11 @@ import { PropsWithChildren } from 'react';
 import { useAuthStore } from '@/features/auth/store';
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetTags } from '@/features/tag/hooks';
-import { DeleteTaskModal } from '@/features/task/components';
+import {
+	ChangeTaskDepartmentModal,
+	DeleteTaskModal,
+	EditTaskModal,
+} from '@/features/task/components';
 import { EditTaskDatesModal } from '@/features/task/components/edit-task-dates-modal';
 import {
 	useEditTaskPriority,
@@ -23,6 +27,9 @@ import {
 	IconCircleArrowRight,
 	IconCircleArrowUp,
 	IconDelete,
+	IconDepartement,
+	IconFolder,
+	IconNoteEdit,
 	IconTag,
 } from '@/shared/components/shared';
 import {
@@ -62,7 +69,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 	const isHigh = task.priority.id === 3;
 
 	return (
-		<ContextMenu>
+		<ContextMenu modal={false}>
 			<ContextMenuTrigger asChild disabled={!isAccess}>
 				{children}
 			</ContextMenuTrigger>
@@ -217,7 +224,7 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 							disabled={isProjectsLoading || isEditTaskProjectLoading}
 							className={'flex items-center gap-x-2'}
 						>
-							<IconTag className={'text-muted-foreground'} />
+							<IconFolder className={'text-muted-foreground'} />
 							Проект задачи
 						</ContextMenuSubTrigger>
 
@@ -268,11 +275,37 @@ export function TaskMenu({ task, children }: PropsWithChildren<Props>) {
 				)}
 
 				{!isCompleted && isAccess && (
+					<ChangeTaskDepartmentModal taskId={task.id}>
+						<Button
+							variant={'ghost'}
+							size={'sm'}
+							className={'flex w-full justify-start font-normal'}
+						>
+							<IconDepartement className={'text-muted-foreground'} />
+							Изменить департамент
+						</Button>
+					</ChangeTaskDepartmentModal>
+				)}
+
+				{!isCompleted && isAccess && (
+					<EditTaskModal taskId={task.id}>
+						<Button
+							variant={'ghost'}
+							size={'sm'}
+							className={'flex w-full justify-start font-normal'}
+						>
+							<IconNoteEdit className={'text-muted-foreground'} />
+							Редактировать задачу
+						</Button>
+					</EditTaskModal>
+				)}
+
+				{!isCompleted && isAccess && (
 					<EditTaskDatesModal taskId={task.id}>
 						<Button
 							variant={'ghost'}
 							size={'sm'}
-							className={'w-full justify-start font-normal'}
+							className={'flex w-full justify-start font-normal'}
 						>
 							<IconCalendar className={'text-muted-foreground'} />
 							Изменить сроки

@@ -4,6 +4,7 @@ export * from './use-create-subtask';
 export * from './use-update-task-tag';
 export * from './use-edit-task-dates';
 export * from './use-edit-task-project';
+export * from './use-edit-task-department';
 export * from './use-get-task';
 export * from './use-delete-task';
 export * from './use-tasks-filters';

@@ -176,6 +176,23 @@ class TaskService {
 			})
 		).data;
 	}
+
+	public async editDepartment(
+		taskId: number,
+		departmentId: number,
+		reason: string,
+	) {
+		return (
+			await instance({
+				method: 'PATCH',
+				url: `/tasks/${taskId}/performer`,
+				data: {
+					departmentId,
+					reason,
+				},
+			})
+		).data;
+	}
 }
 
 export const taskService = new TaskService();

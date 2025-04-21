@@ -6,6 +6,7 @@ export * from './change-tag-menu';
 export * from './change-project-menu';
 export * from './change-status-menu';
 export * from './change-priority-menu';
+export * from './change-task-department-modal';
 export * from './create-subtask-modal';
 export * from './create-task-modal';
 export * from './task-form';

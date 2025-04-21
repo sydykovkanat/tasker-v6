@@ -4,7 +4,6 @@ import { TaskForm } from '@/features/task/components';
 import { useEditTask, useGetTask } from '@/features/task/hooks';
 import { TaskSchemaType } from '@/features/task/schemas';
 
-import { ErrorBlock } from '@/shared/components/shared';
 import {
 	Dialog,
 	DialogContent,
@@ -33,10 +32,6 @@ export function EditTaskModal({
 		setIsOpen(false);
 	};
 
-	if (!task) {
-		return <ErrorBlock />;
-	}
-
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen} modal={modal}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
@@ -50,23 +45,25 @@ export function EditTaskModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<TaskForm
-					onSubmit={handleEdit}
-					isLoading={isEditTaskLoading || isTaskLoading}
-					type={'edit'}
-					defaultValues={{
-						taskName: task.taskName,
-						priorityId: task.priority.id.toString(),
-						performerId: [task.performer.id.toString()],
-						departmentId: task.departmentDto.id.toString(),
-						projectId: task.project?.id.toString(),
-						dates: {
-							from: new Date(task.startDate),
-							to: new Date(task.endDate),
-						},
-						description: task.description,
-					}}
-				/>
+				{task && (
+					<TaskForm
+						onSubmit={handleEdit}
+						isLoading={isEditTaskLoading || isTaskLoading}
+						type={'edit'}
+						defaultValues={{
+							taskName: task.taskName,
+							priorityId: task.priority.id.toString(),
+							performerId: [task.performer.id.toString()],
+							departmentId: task.departmentDto.id.toString(),
+							projectId: task.project?.id.toString(),
+							dates: {
+								from: new Date(task.startDate),
+								to: new Date(task.endDate),
+							},
+							description: task.description,
+						}}
+					/>
+				)}
 			</DialogContent>
 		</Dialog>
 	);
