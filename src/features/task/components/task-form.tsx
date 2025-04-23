@@ -3,6 +3,7 @@ import { CalendarIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { useAuthStore } from '@/features/auth/store';
+import { useGetDepartments } from '@/features/department/hooks';
 import { useGetProjects } from '@/features/project/hooks';
 import { TaskSchema, TaskSchemaType } from '@/features/task/schemas';
 import { useGetUsersByDepartment } from '@/features/user/hooks';
@@ -81,7 +82,7 @@ export function TaskForm({ onSubmit, isLoading, defaultValues, type }: Props) {
 	const dates = form.watch('dates');
 
 	const { projects, isProjectsLoading } = useGetProjects();
-	// const { departments, isDepartmentsLoading } = useGetDepartments();
+	const { departments, isDepartmentsLoading } = useGetDepartments();
 	const { users, isUsersLoading } = useGetUsersByDepartment(
 		form.watch('departmentId'),
 	);
@@ -271,60 +272,62 @@ export function TaskForm({ onSubmit, isLoading, defaultValues, type }: Props) {
 							)}
 						/>
 
-						{/*<FormField*/}
-						{/*	control={form.control}*/}
-						{/*	name={'departmentId'}*/}
-						{/*	render={({ field }) => (*/}
-						{/*		<FormItem>*/}
-						{/*			<FormLabel>Отдел</FormLabel>*/}
+						{type === 'create' && (
+							<FormField
+								control={form.control}
+								name={'departmentId'}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Отдел</FormLabel>
 
-						{/*			<FormControl>*/}
-						{/*				<Select*/}
-						{/*					value={field.value}*/}
-						{/*					onValueChange={(v) => {*/}
-						{/*						field.onChange(v);*/}
-						{/*						form.setValue('performerId', ['undefined']);*/}
-						{/*					}}*/}
-						{/*					disabled={isLoading}*/}
-						{/*				>*/}
-						{/*					<SelectTrigger size={'lg'} className={'w-full'}>*/}
-						{/*						<SelectValue placeholder={'Выберите отдел'} />*/}
-						{/*					</SelectTrigger>*/}
+										<FormControl>
+											<Select
+												value={field.value}
+												onValueChange={(v) => {
+													field.onChange(v);
+													form.setValue('performerId', ['undefined']);
+												}}
+												disabled={isLoading}
+											>
+												<SelectTrigger size={'lg'} className={'w-full'}>
+													<SelectValue placeholder={'Выберите отдел'} />
+												</SelectTrigger>
 
-						{/*					<SelectContent>*/}
-						{/*						{isDepartmentsLoading ? (*/}
-						{/*							<SelectItem value={'undefined'} disabled>*/}
-						{/*								Загрузка отделов...*/}
-						{/*							</SelectItem>*/}
-						{/*						) : departments && departments.length === 0 ? (*/}
-						{/*							<SelectItem value={'undefined'} disabled>*/}
-						{/*								Нет доступных отделов*/}
-						{/*							</SelectItem>*/}
-						{/*						) : (*/}
-						{/*							<>*/}
-						{/*								<SelectItem value={'undefined'}>*/}
-						{/*									Не выбрано*/}
-						{/*								</SelectItem>*/}
+												<SelectContent>
+													{isDepartmentsLoading ? (
+														<SelectItem value={'undefined'} disabled>
+															Загрузка отделов...
+														</SelectItem>
+													) : departments && departments.length === 0 ? (
+														<SelectItem value={'undefined'} disabled>
+															Нет доступных отделов
+														</SelectItem>
+													) : (
+														<>
+															<SelectItem value={'undefined'}>
+																Не выбрано
+															</SelectItem>
 
-						{/*								{departments &&*/}
-						{/*									departments.map((department) => (*/}
-						{/*										<SelectItem*/}
-						{/*											value={department.id.toString()}*/}
-						{/*											key={department.id}*/}
-						{/*										>*/}
-						{/*											{department.departmentName}*/}
-						{/*										</SelectItem>*/}
-						{/*									))}*/}
-						{/*							</>*/}
-						{/*						)}*/}
-						{/*					</SelectContent>*/}
-						{/*				</Select>*/}
-						{/*			</FormControl>*/}
+															{departments &&
+																departments.map((department) => (
+																	<SelectItem
+																		value={department.id.toString()}
+																		key={department.id}
+																	>
+																		{department.departmentName}
+																	</SelectItem>
+																))}
+														</>
+													)}
+												</SelectContent>
+											</Select>
+										</FormControl>
 
-						{/*			<FormMessage />*/}
-						{/*		</FormItem>*/}
-						{/*	)}*/}
-						{/*/>*/}
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						)}
 
 						<FormField
 							control={form.control}

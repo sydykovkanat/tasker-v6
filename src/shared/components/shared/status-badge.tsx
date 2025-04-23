@@ -1,26 +1,50 @@
-import { Badge } from '@/shared/components/ui';
+import React, { SVGProps } from 'react';
+
+import {
+	CompletedIcon,
+	InProgressIcon,
+	NewTaskIcon,
+	RejectedIcon,
+} from '@/shared/components/shared/icons';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '@/shared/components/ui';
 import { formatStatus } from '@/shared/lib';
 import { IStatus } from '@/shared/types';
+import { cn } from '@/shared/utils';
 
 interface Props {
 	status: IStatus;
+	className?: string;
 }
 
-export function StatusBadge({ status }: Props) {
-	const { label } = formatStatus(status.id);
+const statusIconMap: Record<number, React.FC<SVGProps<SVGSVGElement>>> = {
+	1: NewTaskIcon,
+	2: InProgressIcon,
+	3: CompletedIcon,
+	4: RejectedIcon,
+};
 
-	const variant =
-		status.id === 1
-			? 'blue'
-			: status.id === 2
-				? 'info'
-				: status.id === 3
-					? 'success'
-					: 'destructive';
+export function StatusBadge({ status, className }: Props) {
+	const Icon = statusIconMap[status.id];
+	const formattedStatus = formatStatus(status.id);
+
+	if (!Icon) return null;
 
 	return (
-		<Badge variant={variant} className={'border-background border-dashed'}>
-			{label}
-		</Badge>
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Icon className={cn('size-5', className)} />
+				</TooltipTrigger>
+
+				<TooltipContent className={'bg-background text-foreground border'}>
+					{formattedStatus.label}
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 }

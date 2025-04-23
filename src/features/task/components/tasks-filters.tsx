@@ -1,4 +1,5 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
+import { useState } from 'react';
 
 import { useAuthStore } from '@/features/auth/store';
 import { IDepartment } from '@/features/department/types';
@@ -59,6 +60,19 @@ export function TasksFilters({
 	query,
 	onQueryChange,
 }: Props) {
+	const [opened, setOpened] = useState({
+		subordinate: false,
+		department: false,
+	});
+
+	const handleSubordinateOpenChange = (value: boolean) => {
+		setOpened((prev) => ({ ...prev, subordinate: value }));
+	};
+
+	const handleDepartmentOpenChange = (value: boolean) => {
+		setOpened((prev) => ({ ...prev, department: value }));
+	};
+
 	const user = useAuthStore((state) => state.user);
 	const isAdmin = user?.roles.includes('ADMIN');
 	const selectedPerformerName =
@@ -105,7 +119,10 @@ export function TasksFilters({
 			</Select>
 
 			{isAdmin && (
-				<Popover>
+				<Popover
+					open={opened.subordinate}
+					onOpenChange={handleSubordinateOpenChange}
+				>
 					<PopoverTrigger asChild>
 						<Button
 							variant='outline'
@@ -127,6 +144,7 @@ export function TasksFilters({
 										value={'all'}
 										onSelect={(currentValue) => {
 											onSubordinateChange(currentValue);
+											handleSubordinateOpenChange(false);
 										}}
 										className={'justify-start text-start'}
 									>
@@ -148,8 +166,10 @@ export function TasksFilters({
 												const selectedPerformerId = subordinates.find(
 													(subordinate) => subordinate.name === currentValue,
 												)?.id;
+
 												if (selectedPerformerId) {
 													onSubordinateChange(selectedPerformerId.toString());
+													handleSubordinateOpenChange(false);
 												}
 											}}
 										>
@@ -172,7 +192,10 @@ export function TasksFilters({
 			)}
 
 			{isAdmin && (
-				<Popover>
+				<Popover
+					open={opened.department}
+					onOpenChange={handleDepartmentOpenChange}
+				>
 					<PopoverTrigger asChild>
 						<Button
 							variant='outline'
@@ -198,6 +221,7 @@ export function TasksFilters({
 										onSelect={(currentValue) => {
 											if (onDepartmentChange) {
 												onDepartmentChange(currentValue);
+												handleDepartmentOpenChange(false);
 											}
 										}}
 										className={'justify-start text-start'}
@@ -223,6 +247,7 @@ export function TasksFilters({
 												)?.id;
 												if (selectedDepartmentId && onDepartmentChange) {
 													onDepartmentChange(selectedDepartmentId.toString());
+													handleDepartmentOpenChange(false);
 												}
 											}}
 										>

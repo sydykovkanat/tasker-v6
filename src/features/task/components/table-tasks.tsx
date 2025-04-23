@@ -18,15 +18,43 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from '@/shared/components/ui';
 import { date } from '@/shared/lib';
 import { cn } from '@/shared/utils';
 
 interface Props {
 	tasks: ITask[];
+	viewPriority?: boolean;
+	viewTaskName?: boolean;
+	viewAuthor?: boolean;
+	viewPerformer?: boolean;
+	viewProject?: boolean;
+	viewDepartment?: boolean;
+	viewTag?: boolean;
+	viewStatus?: boolean;
+	viewStartDate?: boolean;
+	viewEndDate?: boolean;
+	viewUpdatedDate?: boolean;
 }
 
-export function TableTasks({ tasks }: Props) {
+export function TableTasks({
+	tasks,
+	viewPriority = true,
+	viewTaskName = true,
+	viewAuthor = true,
+	viewPerformer = true,
+	viewDepartment = true,
+	viewProject = true,
+	viewTag = true,
+	viewStatus = true,
+	viewStartDate = true,
+	viewEndDate = true,
+	viewUpdatedDate = true,
+}: Props) {
 	const navigate = useNavigate();
 
 	const handleCellClick = (taskId: number) => {
@@ -38,15 +66,43 @@ export function TableTasks({ tasks }: Props) {
 			<Table className={'table-fixed'}>
 				<TableHeader>
 					<TableRow>
-						<TableHead className={'w-[60px]'}>Приор.</TableHead>
-						<TableHead>Название</TableHead>
-						<TableHead>Автор</TableHead>
-						<TableHead>Исполнитель</TableHead>
-						<TableHead>Проект / Тег</TableHead>
-						<TableHead className={'w-[100px]'}>Статус</TableHead>
-						<TableHead className={'w-[110px]'}>Начало</TableHead>
-						<TableHead className={'w-[110px]'}>Окончание</TableHead>
-						<TableHead className={'w-[120px]'}>Обновлено</TableHead>
+						{viewPriority && (
+							<TableHead className={'w-[60px]'}>Приор.</TableHead>
+						)}
+
+						{viewTaskName && <TableHead>Название</TableHead>}
+
+						{viewAuthor && <TableHead>Автор</TableHead>}
+
+						{viewPerformer && <TableHead>Исполнитель</TableHead>}
+
+						{viewDepartment && (
+							<TableHead className={'w-[120px]'}>Отдел</TableHead>
+						)}
+
+						{(viewProject || viewTag) && (
+							<TableHead>
+								{viewProject && 'Проект'}
+								{viewProject && viewTag && <i className={'mx-1.5'}>•</i>}
+								{viewTag && 'Тег'}
+							</TableHead>
+						)}
+
+						{viewStatus && (
+							<TableHead className={'w-[100px] text-center'}>Статус</TableHead>
+						)}
+
+						{(viewStartDate || viewEndDate) && (
+							<TableHead className={'w-[140px]'}>
+								{viewStartDate && 'Начало'}
+								{viewStartDate && viewEndDate && <i className={'mx-1.5'}>•</i>}
+								{viewEndDate && 'Конец'}
+							</TableHead>
+						)}
+
+						{viewUpdatedDate && (
+							<TableHead className={'w-[120px]'}>Обновлено</TableHead>
+						)}
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -80,51 +136,99 @@ export function TableTasks({ tasks }: Props) {
 									)}
 									onClick={() => handleCellClick(task.id)}
 								>
-									<TableCell>
-										<div className={'flex items-center'}>
-											<PriorityBadge full={false} priority={task.priority} />
-										</div>
-									</TableCell>
-									<TableCell>
-										<p className={'text-wrap'}>{task.taskName}</p>
-									</TableCell>
-									<TableCell className={'truncate'}>{authorName}</TableCell>
-									<TableCell className={'truncate'}>{performerName}</TableCell>
-									<TableCell>
-										<div className={'flex items-center gap-x-2'}>
-											{task.project && (
-												<Badge
-													variant={'secondary'}
-													className={'border-border border-dashed'}
-												>
-													<IconFolder />
-													{task.project.name}
-												</Badge>
+									{viewPriority && (
+										<TableCell>
+											<div className={'flex items-center'}>
+												<PriorityBadge full={false} priority={task.priority} />
+											</div>
+										</TableCell>
+									)}
+
+									{viewTaskName && (
+										<TableCell>
+											<p className={'text-wrap'}>{task.taskName}</p>
+										</TableCell>
+									)}
+
+									{viewAuthor && (
+										<TableCell className={'truncate'}>{authorName}</TableCell>
+									)}
+
+									{viewPerformer && (
+										<TableCell className={'truncate'}>
+											{performerName}
+										</TableCell>
+									)}
+
+									{viewDepartment && (
+										<TableCell className={'truncate'}>
+											<TooltipProvider>
+												<Tooltip>
+													<TooltipTrigger asChild>
+														<p className={'truncate'}>
+															{task.departmentDto.departmentName}
+														</p>
+													</TooltipTrigger>
+
+													<TooltipContent className={'border'}>
+														{task.departmentDto.departmentName}
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										</TableCell>
+									)}
+
+									{(viewProject || viewTag) && (
+										<TableCell className={'w-[100px] truncate'}>
+											<div className={'flex items-center gap-x-2'}>
+												{task.project && viewProject && (
+													<Badge
+														variant={'secondary'}
+														className={'border-border border-dashed'}
+													>
+														<IconFolder />
+														{task.project.name}
+													</Badge>
+												)}
+
+												{task.tagDto && viewTag && (
+													<Badge
+														variant={'secondary'}
+														className={'border-border border-dashed'}
+													>
+														<IconTag />
+														{task.tagDto.name}
+													</Badge>
+												)}
+											</div>
+										</TableCell>
+									)}
+
+									{viewStatus && (
+										<TableCell>
+											<div className={'flex items-center justify-center'}>
+												<StatusBadge status={task.status} />
+											</div>
+										</TableCell>
+									)}
+
+									{(viewStartDate || viewEndDate) && (
+										<TableCell className={'truncate'}>
+											{viewStartDate && <span>{formattedDates.startDate}</span>}
+
+											{viewStartDate && viewEndDate && (
+												<i className={'mx-1.5'}>•</i>
 											)}
 
-											{task.tagDto && (
-												<Badge
-													variant={'secondary'}
-													className={'border-border border-dashed'}
-												>
-													<IconTag />
-													{task.tagDto.name}
-												</Badge>
-											)}
-										</div>
-									</TableCell>
-									<TableCell>
-										<StatusBadge status={task.status} />
-									</TableCell>
-									<TableCell className={'truncate'}>
-										{formattedDates.startDate}
-									</TableCell>
-									<TableCell className={'truncate'}>
-										{formattedDates.endDate}
-									</TableCell>
-									<TableCell className={'truncate'}>
-										{formattedDates.updatedDate}
-									</TableCell>
+											{viewEndDate && <span>{formattedDates.endDate}</span>}
+										</TableCell>
+									)}
+
+									{viewUpdatedDate && (
+										<TableCell className={'truncate'}>
+											{formattedDates.updatedDate}
+										</TableCell>
+									)}
 								</motion.tr>
 							</TaskMenu>
 						);

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { useAuthStore } from '@/features/auth/store';
 import { useGetDepartments } from '@/features/department/hooks';
 import { useGetProjects } from '@/features/project/hooks';
 import { useGetSubordinates } from '@/features/subordinate/hooks';
@@ -24,6 +25,7 @@ import { Button } from '@/shared/components/ui';
 import { formatStatus, safeParse } from '@/shared/lib';
 
 export function Home() {
+	const user = useAuthStore((state) => state.user);
 	const viewMode = useTaskStore((state) => state.viewMode);
 	const {
 		handleProjectChange,
@@ -86,6 +88,12 @@ export function Home() {
 		);
 
 	const formattedStatus = formatStatus(parseInt(statusId || '0'));
+
+	const viewProject = !projectId || projectId === 'all';
+	const viewStatus = !statusId || statusId === 'all';
+	const viewDepartment =
+		(!departmentId || departmentId === 'all') && user?.roles.includes('ADMIN');
+	const viewPerformer = !performerId || performerId === 'all';
 
 	return (
 		<div>
@@ -168,7 +176,7 @@ export function Home() {
 					<div className={'grid grid-cols-3 gap-4 p-4'}>
 						{[newTasks, inProgressTasks, completedTasks].map(
 							(taskList, index) => (
-								<div>
+								<div key={index}>
 									<TasksColumnTitle
 										status={formatStatus(index + 1).label}
 										count={taskList.length}
@@ -204,7 +212,13 @@ export function Home() {
 				)
 			) : (
 				<div className={'p-4 pt-2 pb-0'}>
-					<TableTasks tasks={tasks} />
+					<TableTasks
+						tasks={tasks}
+						viewProject={viewProject}
+						viewStatus={viewStatus}
+						viewAuthor={viewPerformer}
+						viewDepartment={viewDepartment}
+					/>
 				</div>
 			)}
 		</div>

@@ -51,6 +51,115 @@ export const IconHome = (props: React.SVGProps<SVGSVGElement>) => (
 		/>
 	</svg>
 );
+export const NewTaskIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color='currentColor'
+		fill='none'
+		{...props}
+	>
+		<circle
+			cx='12'
+			cy='12'
+			r='10'
+			fill='#f0f9ff'
+			stroke='#3b82f6'
+			strokeWidth='1.5'
+		/>
+		<path
+			d='M8,12 L16,12 M12,8 L12,16'
+			stroke='#3b82f6'
+			strokeWidth='1.8'
+			strokeLinecap='round'
+		/>
+	</svg>
+);
+
+export const InProgressIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color='currentColor'
+		fill='none'
+		{...props}
+	>
+		<circle
+			cx='12'
+			cy='12'
+			r='10'
+			fill='#f3e8ff'
+			stroke='#ad46ff'
+			strokeWidth='1.5'
+		/>
+		<path
+			d='M12,7 L12,12 L17,15'
+			stroke='#ad46ff'
+			strokeWidth='1.8'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const CompletedIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color='currentColor'
+		fill='none'
+		{...props}
+	>
+		<circle
+			cx='12'
+			cy='12'
+			r='10'
+			fill='#ecfdf5'
+			stroke='#10b981'
+			strokeWidth='1.5'
+		/>
+		<path
+			d='M8,12 L11,15 L16,9'
+			stroke='#10b981'
+			strokeWidth='1.8'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const RejectedIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 24 24'
+		width={24}
+		height={24}
+		color='currentColor'
+		fill='none'
+		{...props}
+	>
+		<circle
+			cx='12'
+			cy='12'
+			r='10'
+			fill='#fef2f2'
+			stroke='#ef4444'
+			strokeWidth='1.5'
+		/>
+		<path
+			d='M8,8 L16,16 M16,8 L8,16'
+			stroke='#ef4444'
+			strokeWidth='1.8'
+			strokeLinecap='round'
+		/>
+	</svg>
+);
 
 export const IconDepartement = (props: React.SVGProps<SVGSVGElement>) => (
 	<svg

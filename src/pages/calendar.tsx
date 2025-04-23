@@ -14,7 +14,12 @@ import { IDepartment } from '@/features/department/types';
 import { useGetTasks } from '@/features/task/hooks';
 import { ITask } from '@/features/task/types';
 
-import { ErrorBlock, Loading, PageTitles } from '@/shared/components/shared';
+import {
+	ErrorBlock,
+	IconArrowsRight,
+	Loading,
+	PageTitles,
+} from '@/shared/components/shared';
 import {
 	Button,
 	Command,
@@ -30,6 +35,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from '@/shared/components/ui';
+import { date } from '@/shared/lib';
 import { cn } from '@/shared/utils';
 
 // Типы данных
@@ -48,7 +54,7 @@ interface PerformerGroup {
 // Константы
 const STATUS_COLORS = {
 	1: 'bg-blue-100 border border-l-2 border-b-2 border-blue-500', // Новая
-	2: 'bg-yellow-100 border border-l-2 border-b-2 border-yellow-500', // В работе
+	2: 'bg-purple-100 border border-l-2 border-b-2 border-purple-500', // В работе
 	3: 'bg-green-100 border border-l-2 border-b-2 border-green-500', // Завершено
 	4: 'bg-red-100 border border-l-2 border-b-2 border-red-500', // Отклонено
 	default: 'bg-gray-100 border border-l-2 border-b-2 border-gray-500',
@@ -485,7 +491,7 @@ export function Calendar() {
 		<TooltipContent
 			className={'bg-background text-foreground max-w-max p-0 text-sm'}
 		>
-			<div className={'rounded-lg p-4 shadow-sm'}>
+			<div className={'rounded-lg p-4'}>
 				<h4 className={'mb-1 line-clamp-2 max-w-52 font-medium'}>
 					{task.taskName}
 				</h4>
@@ -500,6 +506,25 @@ export function Calendar() {
 				<div>
 					<h4 className={'text-muted-foreground text-xs'}>Исполнитель:</h4>
 					<p>{task.performer.name}</p>
+				</div>
+
+				<div>
+					<h4 className={'text-muted-foreground text-xs'}>Сроки:</h4>
+
+					<p className={'flex items-center gap-x-1 text-xs'}>
+						{new Date(task.startDate).getTime() ===
+						new Date(task.endDate).getTime() ? (
+							<span>{date(task.startDate)}</span>
+						) : (
+							<>
+								{date(task.startDate)}
+
+								<IconArrowsRight className={'text-muted-foreground size-3'} />
+
+								{date(task.endDate)}
+							</>
+						)}
+					</p>
 				</div>
 
 				<Link to={`/tasks/${task.id}`}>
@@ -524,6 +549,10 @@ export function Calendar() {
 		return <ErrorBlock />;
 	}
 
+	const sortedPerformers = Object.values(processedTasks.performerGroups).sort(
+		(a, b) => a.performer.name.localeCompare(b.performer.name),
+	);
+
 	return (
 		<div className='overflow-hidden bg-white shadow'>
 			<PageTitles
@@ -547,13 +576,13 @@ export function Calendar() {
 				<div className='relative'>
 					<TodayMarker />
 
-					{Object.keys(processedTasks.performerGroups).length === 0 ? (
+					{sortedPerformers.length === 0 ? (
 						<div className='flex min-h-screen items-center justify-center text-center text-gray-500'>
 							<p>Нет задач для отображения в этом месяце</p>
 						</div>
 					) : (
 						<div className='min-h-screen space-y-6'>
-							{Object.values(processedTasks.performerGroups).map((group) => (
+							{sortedPerformers.map((group) => (
 								<div key={group.performer.id} className='mb-6'>
 									<div className='mb-2 font-medium text-gray-700'>
 										{group.performer.name}

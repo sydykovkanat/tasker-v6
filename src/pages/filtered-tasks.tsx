@@ -118,7 +118,7 @@ export function FilteredTasks({ statusId }: Props) {
 						))}
 					</div>
 				) : (
-					<TableTasks tasks={tasks} />
+					<TableTasks tasks={tasks} viewStatus={false} />
 				)}
 			</section>
 		</div>
