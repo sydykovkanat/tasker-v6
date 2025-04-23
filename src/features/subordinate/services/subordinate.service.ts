@@ -17,6 +17,17 @@ class SubordinateService {
 			})
 		).data;
 	}
+
+	public async editAvatar(subordinateId: number, avatar: File): Promise<void> {
+		const formData = new FormData();
+		formData.append('avatar', avatar);
+
+		await instance({
+			url: `/users/${subordinateId}`,
+			method: 'PUT',
+			data: formData,
+		});
+	}
 }
 
 export const subordinateService = new SubordinateService();
