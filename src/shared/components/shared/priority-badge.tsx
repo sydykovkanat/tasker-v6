@@ -27,7 +27,7 @@ export function PriorityBadge({ priority, full = true }: Props) {
 	) : (
 		<div
 			className={cn(
-				'flex size-3 items-center justify-center rounded-full border',
+				'flex size-3.5 items-center justify-center rounded-full border',
 				{
 					'border-green-500': priority.id === 1,
 					'border-yellow-500': priority.id === 2,
@@ -36,7 +36,7 @@ export function PriorityBadge({ priority, full = true }: Props) {
 				},
 			)}
 		>
-			<Badge variant={variant} className={'border-background size-2.5 p-0'} />
+			<Badge variant={variant} className={'border-background size-3 p-0'} />
 		</div>
 	);
 }
