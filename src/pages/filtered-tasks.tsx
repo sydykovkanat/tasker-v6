@@ -57,6 +57,10 @@ export function FilteredTasks({ statusId }: Props) {
 		return <ErrorBlock />;
 	}
 
+	const sortedSubordinates = [...tasks].sort((a, b) => {
+		return a.performer.name.localeCompare(b.performer.name);
+	});
+
 	return (
 		<div>
 			<PageTitles
@@ -102,7 +106,7 @@ export function FilteredTasks({ statusId }: Props) {
 					</p>
 				) : viewMode === 'kanban' ? (
 					<div className={'columns-2 gap-4'}>
-						{tasks.map((task) => (
+						{sortedSubordinates.map((task) => (
 							<div key={task.id} className='mb-4 break-inside-avoid'>
 								<motion.div
 									key={task.id}
@@ -118,7 +122,7 @@ export function FilteredTasks({ statusId }: Props) {
 						))}
 					</div>
 				) : (
-					<TableTasks tasks={tasks} viewStatus={false} />
+					<TableTasks tasks={sortedSubordinates} viewStatus={false} />
 				)}
 			</section>
 		</div>

@@ -139,6 +139,8 @@ export function TableTasks({
 									{viewPriority && (
 										<TableCell>
 											<div className={'flex items-center gap-x-2'}>
+												<PriorityBadge full={false} priority={task.priority} />
+
 												{task.priorityOrder && (
 													<Badge
 														variant={'secondary'}
@@ -149,8 +151,6 @@ export function TableTasks({
 														{task.priorityOrder}
 													</Badge>
 												)}
-
-												<PriorityBadge full={false} priority={task.priority} />
 											</div>
 										</TableCell>
 									)}

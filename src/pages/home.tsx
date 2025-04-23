@@ -68,24 +68,37 @@ export function Home() {
 			new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
 	);
 
+	const sortedTaskByPerformerName = [...tasks].sort((a, b) => {
+		return a.performer.name.localeCompare(b.performer.name);
+	});
+
 	const newTasks = tasks
 		.filter((task) => task.status.id === 1)
 		.sort(
 			(a, b) =>
 				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
-		);
+		)
+		.sort((a, b) => {
+			return a.performer.name.localeCompare(b.performer.name);
+		});
 	const inProgressTasks = tasks
 		.filter((task) => task.status.id === 2)
 		.sort(
 			(a, b) =>
 				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
-		);
+		)
+		.sort((a, b) => {
+			return a.performer.name.localeCompare(b.performer.name);
+		});
 	const completedTasks = tasks
 		.filter((task) => task.status.id === 3)
 		.sort(
 			(a, b) =>
 				new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
-		);
+		)
+		.sort((a, b) => {
+			return a.performer.name.localeCompare(b.performer.name);
+		});
 
 	const formattedStatus = formatStatus(parseInt(statusId || '0'));
 
@@ -145,7 +158,7 @@ export function Home() {
 
 						<AnimatePresence mode={'popLayout'}>
 							<div className='columns-2 gap-4'>
-								{sortedTasks.length === 0 ? (
+								{sortedTaskByPerformerName.length === 0 ? (
 									<p
 										className={
 											'text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
@@ -154,7 +167,7 @@ export function Home() {
 										Список задач со статусом "{formattedStatus.label}" пуст.
 									</p>
 								) : (
-									sortedTasks.map((task) => (
+									sortedTaskByPerformerName.map((task) => (
 										<div key={task.id} className='mb-4 break-inside-avoid'>
 											<motion.div
 												key={task.id}
